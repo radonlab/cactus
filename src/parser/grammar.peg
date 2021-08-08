@@ -1,0 +1,22 @@
+# Parsing Expression Grammar for Cactus
+
+%prefix "cactus"
+
+compilation_unit <-
+    import_directive* statement+
+
+# Directives
+
+import_directive <-
+    IMPORT
+
+# Statements
+
+statement <-
+    let_statement
+
+let_statement <-
+    LET
+
+IMPORT <- "import"
+LET <- "let"
