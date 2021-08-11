@@ -2,21 +2,22 @@
 
 %prefix "cactus"
 
-compilation_unit <-
-    import_directive* statement+
+CompilationUnit <-
+    ImportDirective* Statement+ EOF
 
 # Directives
 
-import_directive <-
+ImportDirective <-
     IMPORT
 
 # Statements
 
-statement <-
-    let_statement
+Statement <-
+    LetStatement
 
-let_statement <-
+LetStatement <-
     LET
 
+EOF <- !.
 IMPORT <- "import"
 LET <- "let"

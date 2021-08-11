@@ -830,6 +830,58 @@ static const char *pcc_get_capture_string(cactus_context_t *ctx, const pcc_captu
     return capt->string;
 }
 
+static size_t pcc_get_char_as_utf32(cactus_context_t *ctx, int *out) { /* with checking UTF-8 validity */
+    int c, u;
+    size_t n;
+    if (pcc_refill_buffer(ctx, 1) < 1) return 0;
+    c = (int)(unsigned char)ctx->buffer.buf[ctx->cur];
+    n = (c < 0x80) ? 1 :
+        ((c & 0xe0) == 0xc0) ? 2 :
+        ((c & 0xf0) == 0xe0) ? 3 :
+        ((c & 0xf8) == 0xf0) ? 4 : 0;
+    if (n < 1) return 0;
+    if (pcc_refill_buffer(ctx, n) < n) return 0;
+    switch (n) {
+    case 1:
+        u = c;
+        break;
+    case 2:
+        u = c & 0x1f;
+        c = (int)(unsigned char)ctx->buffer.buf[ctx->cur + 1];
+        if ((c & 0xc0) != 0x80) return 0;
+        u <<= 6; u |= c & 0x3f;
+        if (u < 0x80) return 0;
+        break;
+    case 3:
+        u = c & 0x0f;
+        c = (int)(unsigned char)ctx->buffer.buf[ctx->cur + 1];
+        if ((c & 0xc0) != 0x80) return 0;
+        u <<= 6; u |= c & 0x3f;
+        c = (int)(unsigned char)ctx->buffer.buf[ctx->cur + 2];
+        if ((c & 0xc0) != 0x80) return 0;
+        u <<= 6; u |= c & 0x3f;
+        if (u < 0x800) return 0;
+        break;
+    case 4:
+        u = c & 0x07;
+        c = (int)(unsigned char)ctx->buffer.buf[ctx->cur + 1];
+        if ((c & 0xc0) != 0x80) return 0;
+        u <<= 6; u |= c & 0x3f;
+        c = (int)(unsigned char)ctx->buffer.buf[ctx->cur + 2];
+        if ((c & 0xc0) != 0x80) return 0;
+        u <<= 6; u |= c & 0x3f;
+        c = (int)(unsigned char)ctx->buffer.buf[ctx->cur + 3];
+        if ((c & 0xc0) != 0x80) return 0;
+        u <<= 6; u |= c & 0x3f;
+        if (u < 0x10000 || u > 0x10ffff) return 0;
+        break;
+    default:
+        return 0;
+    }
+    if (out) *out = u;
+    return n;
+}
+
 static pcc_bool_t pcc_apply_rule(cactus_context_t *ctx, pcc_rule_t rule, pcc_thunk_array_t *thunks, pcc_value_t *value) {
     static pcc_value_t null;
     pcc_thunk_chunk_t *c = NULL;
@@ -946,17 +998,18 @@ static void pcc_do_action(cactus_context_t *ctx, const pcc_thunk_array_t *thunks
     }
 }
 
-static pcc_thunk_chunk_t *pcc_evaluate_rule_compilation_unit(cactus_context_t *ctx);
-static pcc_thunk_chunk_t *pcc_evaluate_rule_import_directive(cactus_context_t *ctx);
-static pcc_thunk_chunk_t *pcc_evaluate_rule_statement(cactus_context_t *ctx);
-static pcc_thunk_chunk_t *pcc_evaluate_rule_let_statement(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_CompilationUnit(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_ImportDirective(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Statement(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LetStatement(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_EOF(cactus_context_t *ctx);
 static pcc_thunk_chunk_t *pcc_evaluate_rule_IMPORT(cactus_context_t *ctx);
 static pcc_thunk_chunk_t *pcc_evaluate_rule_LET(cactus_context_t *ctx);
 
-static pcc_thunk_chunk_t *pcc_evaluate_rule_compilation_unit(cactus_context_t *ctx) {
+static pcc_thunk_chunk_t *pcc_evaluate_rule_CompilationUnit(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
     chunk->pos = ctx->cur;
-    PCC_DEBUG(PCC_DBG_EVALUATE, "compilation_unit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    PCC_DEBUG(PCC_DBG_EVALUATE, "CompilationUnit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
     ctx->level++;
     pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
     pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
@@ -965,7 +1018,7 @@ static pcc_thunk_chunk_t *pcc_evaluate_rule_compilation_unit(cactus_context_t *c
         for (i = 0;; i++) {
             const size_t p = ctx->cur;
             const size_t n = chunk->thunks.len;
-            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_import_directive, &chunk->thunks, NULL)) goto L0001;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_ImportDirective, &chunk->thunks, NULL)) goto L0001;
             if (ctx->cur == p) break;
             continue;
         L0001:;
@@ -981,7 +1034,7 @@ static pcc_thunk_chunk_t *pcc_evaluate_rule_compilation_unit(cactus_context_t *c
         for (i = 0;; i++) {
             const size_t p = ctx->cur;
             const size_t n = chunk->thunks.len;
-            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_statement, &chunk->thunks, NULL)) goto L0002;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Statement, &chunk->thunks, NULL)) goto L0002;
             if (ctx->cur == p) break;
             continue;
         L0002:;
@@ -995,66 +1048,97 @@ static pcc_thunk_chunk_t *pcc_evaluate_rule_compilation_unit(cactus_context_t *c
             goto L0000;
         }
     }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_EOF, &chunk->thunks, NULL)) goto L0000;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_MATCH, "compilation_unit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_MATCH, "CompilationUnit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     return chunk;
 L0000:;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_NOMATCH, "compilation_unit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_NOMATCH, "CompilationUnit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     pcc_thunk_chunk__destroy(ctx->auxil, chunk);
     return NULL;
 }
 
-static pcc_thunk_chunk_t *pcc_evaluate_rule_import_directive(cactus_context_t *ctx) {
+static pcc_thunk_chunk_t *pcc_evaluate_rule_ImportDirective(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
     chunk->pos = ctx->cur;
-    PCC_DEBUG(PCC_DBG_EVALUATE, "import_directive", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    PCC_DEBUG(PCC_DBG_EVALUATE, "ImportDirective", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
     ctx->level++;
     pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
     pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
     if (!pcc_apply_rule(ctx, pcc_evaluate_rule_IMPORT, &chunk->thunks, NULL)) goto L0000;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_MATCH, "import_directive", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_MATCH, "ImportDirective", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     return chunk;
 L0000:;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_NOMATCH, "import_directive", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_NOMATCH, "ImportDirective", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     pcc_thunk_chunk__destroy(ctx->auxil, chunk);
     return NULL;
 }
 
-static pcc_thunk_chunk_t *pcc_evaluate_rule_statement(cactus_context_t *ctx) {
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Statement(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
     chunk->pos = ctx->cur;
-    PCC_DEBUG(PCC_DBG_EVALUATE, "statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    PCC_DEBUG(PCC_DBG_EVALUATE, "Statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
     ctx->level++;
     pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
     pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
-    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_let_statement, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LetStatement, &chunk->thunks, NULL)) goto L0000;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_MATCH, "statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_MATCH, "Statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     return chunk;
 L0000:;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_NOMATCH, "statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_NOMATCH, "Statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     pcc_thunk_chunk__destroy(ctx->auxil, chunk);
     return NULL;
 }
 
-static pcc_thunk_chunk_t *pcc_evaluate_rule_let_statement(cactus_context_t *ctx) {
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LetStatement(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
     chunk->pos = ctx->cur;
-    PCC_DEBUG(PCC_DBG_EVALUATE, "let_statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    PCC_DEBUG(PCC_DBG_EVALUATE, "LetStatement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
     ctx->level++;
     pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
     pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
     if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LET, &chunk->thunks, NULL)) goto L0000;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_MATCH, "let_statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_MATCH, "LetStatement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     return chunk;
 L0000:;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_NOMATCH, "let_statement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_NOMATCH, "LetStatement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_EOF(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        {
+            int u;
+            const size_t n = pcc_get_char_as_utf32(ctx, &u);
+            if (n == 0) goto L0001;
+            ctx->cur += n;
+        }
+        ctx->cur = p;
+        goto L0000;
+    L0001:;
+        ctx->cur = p;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     pcc_thunk_chunk__destroy(ctx->auxil, chunk);
     return NULL;
 }
@@ -1117,7 +1201,7 @@ cactus_context_t *cactus_create(void *auxil) {
 int cactus_parse(cactus_context_t *ctx, int *ret) {
     pcc_thunk_array_t thunks;
     pcc_thunk_array__init(ctx->auxil, &thunks, PCC_ARRAYSIZE);
-    if (pcc_apply_rule(ctx, pcc_evaluate_rule_compilation_unit, &thunks, ret))
+    if (pcc_apply_rule(ctx, pcc_evaluate_rule_CompilationUnit, &thunks, ret))
         pcc_do_action(ctx, &thunks, ret);
     else
         PCC_ERROR(ctx->auxil);
