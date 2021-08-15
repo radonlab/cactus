@@ -3,7 +3,7 @@
 %prefix "cactus"
 
 CompilationUnit <-
-    ImportDirective* Statement+ EOF
+    ImportDirective* StatementList EOF
 
 # Directives
 
@@ -12,12 +12,48 @@ ImportDirective <-
 
 # Statements
 
+StatementList <-
+    (Statement StatementSep)+
+
 Statement <-
     LetStatement
+
+StatementSep <-
+    _ SEMI / _ LineComment? NEWLINE / _ GeneralMultilineComment
 
 LetStatement <-
     LET
 
+# Skipped
+
+_ <-
+    (WhiteSpace / GeneralInlineComment)*
+
+__ <-
+    (WhiteSpace / NEWLINE / GeneralComment / LineComment)*
+
+WhiteSpace <-
+    [ \t\u000C]+
+
+GeneralComment <-
+    '/*' (!'*/' .)* '*/'
+
+GeneralInlineComment <-
+    '/*' (!('*/' / NEWLINE) .)* '*/'
+
+GeneralMultilineComment <-
+    '/*' (!('*/' / NEWLINE) .)* NEWLINE (!'*/' .)* '*/'
+
+LineComment <-
+    '//' (!NEWLINE .)*
+
+# Tokens
+
 EOF <- !.
-IMPORT <- "import"
-LET <- "let"
+SEMI <- ';'
+NEWLINE <- ('\r'? '\n' / '\r')
+
+# Keywords
+
+IMPORT <- 'import'
+LET    <- 'let'
