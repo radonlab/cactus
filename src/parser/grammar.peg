@@ -3,7 +3,7 @@
 %prefix "cactus"
 
 CompilationUnit <-
-    ImportDirective* StatementList EOF
+    ImportDirective* Block EOF
 
 # Directives
 
@@ -12,14 +12,20 @@ ImportDirective <-
 
 # Statements
 
+Block <-
+    L_CURLY __ StatementList? __ R_CURLY
+
 StatementList <-
-    (Statement StatementSep)+
+    (Statement StatementSep)* LastStatement
 
 Statement <-
     LetStatement
 
+LastStatement <-
+    "end"
+
 StatementSep <-
-    _ SEMI / _ LineComment? NEWLINE / _ BlockMultilineComment
+    _ (SEMI / LineComment? NEWLINE / BlockMultilineComment) _
 
 LetStatement <-
     LET !LETTER_OR_DIGIT _ IDENTIFIER
@@ -55,8 +61,16 @@ LET    <- 'let'
 # Lexical Rules
 
 EOF <- !.
-SEMI <- ';'
 NEWLINE <- '\n' / '\r\n' / '\r'
+
+SEMI <- ';'
+# L_PAREN <- '('
+# R_PAREN <- ')'
+L_CURLY <- '{'
+R_CURLY <- '}'
+# L_BRACKET <- '['
+# R_BRACKET <- ']'
+
 LETTER <- UNICODE_LETTER / '_'
 LETTER_OR_DIGIT <- LETTER / UNICODE_DIGIT
 IDENTIFIER <- LETTER LETTER_OR_DIGIT*
