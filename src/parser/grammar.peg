@@ -22,7 +22,7 @@ StatementSep <-
     _ SEMI / _ LineComment? NEWLINE / _ BlockMultilineComment
 
 LetStatement <-
-    LET
+    LET !LETTER_OR_DIGIT _ IDENTIFIER
 
 # Skipped
 
@@ -58,7 +58,8 @@ EOF <- !.
 SEMI <- ';'
 NEWLINE <- '\n' / '\r\n' / '\r'
 LETTER <- UNICODE_LETTER / '_'
-IDENTIFIER <- LETTER (LETTER / UNICODE_DIGIT)*
+LETTER_OR_DIGIT <- LETTER / UNICODE_DIGIT
+IDENTIFIER <- LETTER LETTER_OR_DIGIT*
 
 # Unicode Group Lu, Ll, Lt, Lm, Lo, Nl
 UNICODE_LETTER <-
