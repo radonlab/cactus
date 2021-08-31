@@ -22,13 +22,97 @@ Statement <-
     LetStatement
 
 LastStatement <-
-    "end"
+    Expression
 
 StatementSep <-
     _ (SEMI / LineComment? NEWLINE / BlockMultilineComment) _
 
 LetStatement <-
-    LET !LETTER_OR_DIGIT _ IDENTIFIER
+    LET WORD_BOUNDARY _ IDENTIFIER _ ASSIGN _ Expression
+
+# Expressions
+
+Expression <-
+    Literal /
+    IfExpression
+
+IfExpression <-
+    IF WORD_BOUNDARY _ Expression _ Block _ (ELSE WORD_BOUNDARY _ (Block / IfExpression))?
+
+# Literals
+Literal <-
+    BooleanLiteral /
+    FloatLiteral /
+    IntegerLiteral /
+    RuneLiteral /
+    StringLiteral
+
+BooleanLiteral <-
+    FALSE / TRUE
+
+FloatLiteral <-
+    DecimalFloatLiteral /
+    HexFloatLiteral
+
+IntegerLiteral <-
+    DecimalIntegerLiteral /
+    BinaryIntegerLiteral /
+    OctalIntegerLiteral /
+    HexIntegerLiteral
+
+RuneLiteral <-
+    '\'' ((!('\'' / '\\' / NEWLINE) .) / ('\\' EscapedCharacter)) '\''
+
+StringLiteral <-
+    '"' ((!('"' / '\\' / NEWLINE) .) / ('\\' EscapedCharacter))* '"'
+
+DecimalFloatLiteral <-
+    (DecimalDigits '.' DecimalDigits? / '.' DecimalDigits) DecimalExponent? /
+    DecimalDigits DecimalExponent
+
+HexFloatLiteral <-
+    '0' [Xx] ('_'? HexDigits '.' HexDigits? / '.' HexDigits / '_'? HexDigits) HexExponent
+
+DecimalExponent <-
+    [Ee] [+-]? DecimalDigits
+
+HexExponent <-
+    [Pp] [+-]? DecimalDigits
+
+DecimalIntegerLiteral <-
+    '0' / NonZeroDigit ('_'? DecimalDigit)*
+
+BinaryIntegerLiteral <-
+    '0' [Bb] ('_'? BinaryDigit)+
+
+OctalIntegerLiteral <-
+    '0' [Oo]? ('_'? OctalDigit)+
+
+HexIntegerLiteral <-
+    '0' [Xx] ('_'? HexDigit)+
+
+DecimalDigits <-
+    DecimalDigit ('_'? DecimalDigit)*
+
+HexDigits <-
+    HexDigit ('_'? HexDigit)*
+
+DecimalDigit <- [0-9]
+NonZeroDigit <- [1-9]
+BinaryDigit <- [01]
+OctalDigit <- [0-7]
+HexDigit <- [0-9A-Fa-f]
+
+EscapedCharacter <-
+    '"' /
+    '\'' /
+    '\\' /
+    'b' /
+    'f' /
+    'n' /
+    'r' /
+    't' /
+    'v'
 
 # Skipped
 
@@ -55,13 +139,19 @@ LineComment <-
 
 # Reserved Words
 
+ELSE   <- 'else'
+FALSE  <- 'false'
+IF     <- 'if'
 IMPORT <- 'import'
 LET    <- 'let'
+TRUE   <- 'true'
 
 # Lexical Rules
 
 EOF <- !.
 NEWLINE <- '\n' / '\r\n' / '\r'
+
+ASSIGN <- '='
 
 SEMI <- ';'
 # L_PAREN <- '('
@@ -74,6 +164,7 @@ R_CURLY <- '}'
 LETTER <- UNICODE_LETTER / '_'
 LETTER_OR_DIGIT <- LETTER / UNICODE_DIGIT
 IDENTIFIER <- LETTER LETTER_OR_DIGIT*
+WORD_BOUNDARY <- !LETTER_OR_DIGIT
 
 # Unicode Group Lu, Ll, Lt, Lm, Lo, Nl
 UNICODE_LETTER <-
