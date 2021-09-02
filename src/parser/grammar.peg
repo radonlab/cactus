@@ -74,10 +74,10 @@ HexFloatLiteral <-
     '0' [Xx] ('_'? HexDigits '.' HexDigits? / '.' HexDigits / '_'? HexDigits) HexExponent
 
 DecimalExponent <-
-    [Ee] [+-]? DecimalDigits
+    [Ee] [+\-]? DecimalDigits
 
 HexExponent <-
-    [Pp] [+-]? DecimalDigits
+    [Pp] [+\-]? DecimalDigits
 
 DecimalIntegerLiteral <-
     '0' / NonZeroDigit ('_'? DecimalDigit)*
