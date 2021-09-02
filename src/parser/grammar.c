@@ -1000,11 +1000,61 @@ static void pcc_do_action(cactus_context_t *ctx, const pcc_thunk_array_t *thunks
 
 static pcc_thunk_chunk_t *pcc_evaluate_rule_CompilationUnit(cactus_context_t *ctx);
 static pcc_thunk_chunk_t *pcc_evaluate_rule_ImportDirective(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Block(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_StatementList(cactus_context_t *ctx);
 static pcc_thunk_chunk_t *pcc_evaluate_rule_Statement(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LastStatement(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_StatementSep(cactus_context_t *ctx);
 static pcc_thunk_chunk_t *pcc_evaluate_rule_LetStatement(cactus_context_t *ctx);
-static pcc_thunk_chunk_t *pcc_evaluate_rule_EOF(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Expression(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IfExpression(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Literal(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BooleanLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_FloatLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IntegerLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_RuneLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_StringLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalFloatLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexFloatLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalExponent(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexExponent(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalIntegerLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BinaryIntegerLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_OctalIntegerLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexIntegerLiteral(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalDigits(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexDigits(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalDigit(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_NonZeroDigit(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BinaryDigit(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_OctalDigit(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexDigit(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_EscapedCharacter(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule__(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule___(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_WhiteSpace(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BlockComment(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BlockInlineComment(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BlockMultilineComment(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LineComment(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_ELSE(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_FALSE(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IF(cactus_context_t *ctx);
 static pcc_thunk_chunk_t *pcc_evaluate_rule_IMPORT(cactus_context_t *ctx);
 static pcc_thunk_chunk_t *pcc_evaluate_rule_LET(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_TRUE(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_EOF(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_NEWLINE(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_ASSIGN(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_SEMI(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_L_CURLY(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_R_CURLY(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LETTER(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LETTER_OR_DIGIT(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IDENTIFIER(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_WORD_BOUNDARY(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_UNICODE_LETTER(cactus_context_t *ctx);
+static pcc_thunk_chunk_t *pcc_evaluate_rule_UNICODE_DIGIT(cactus_context_t *ctx);
 
 static pcc_thunk_chunk_t *pcc_evaluate_rule_CompilationUnit(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
@@ -1027,27 +1077,7 @@ static pcc_thunk_chunk_t *pcc_evaluate_rule_CompilationUnit(cactus_context_t *ct
             break;
         }
     }
-    {
-        const size_t p0 = ctx->cur;
-        const size_t n0 = chunk->thunks.len;
-        int i;
-        for (i = 0;; i++) {
-            const size_t p = ctx->cur;
-            const size_t n = chunk->thunks.len;
-            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Statement, &chunk->thunks, NULL)) goto L0002;
-            if (ctx->cur == p) break;
-            continue;
-        L0002:;
-            ctx->cur = p;
-            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
-            break;
-        }
-        if (i < 1) {
-            ctx->cur = p0;
-            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n0);
-            goto L0000;
-        }
-    }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Block, &chunk->thunks, NULL)) goto L0000;
     if (!pcc_apply_rule(ctx, pcc_evaluate_rule_EOF, &chunk->thunks, NULL)) goto L0000;
     ctx->level--;
     PCC_DEBUG(PCC_DBG_MATCH, "CompilationUnit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
@@ -1077,6 +1107,70 @@ L0000:;
     return NULL;
 }
 
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Block(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "Block", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_L_CURLY, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule___, &chunk->thunks, NULL)) goto L0000;
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_StatementList, &chunk->thunks, NULL)) goto L0001;
+        goto L0002;
+    L0001:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+    L0002:;
+    }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule___, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_R_CURLY, &chunk->thunks, NULL)) goto L0000;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "Block", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "Block", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_StatementList(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "StatementList", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Statement, &chunk->thunks, NULL)) goto L0001;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_StatementSep, &chunk->thunks, NULL)) goto L0001;
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LastStatement, &chunk->thunks, NULL)) goto L0000;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "StatementList", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "StatementList", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
 static pcc_thunk_chunk_t *pcc_evaluate_rule_Statement(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
     chunk->pos = ctx->cur;
@@ -1095,6 +1189,74 @@ L0000:;
     return NULL;
 }
 
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LastStatement(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "LastStatement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Expression, &chunk->thunks, NULL)) goto L0000;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "LastStatement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "LastStatement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_StatementSep(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "StatementSep", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_SEMI, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LineComment, &chunk->thunks, NULL)) goto L0004;
+            goto L0005;
+        L0004:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        L0005:;
+        }
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0003;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_BlockMultilineComment, &chunk->thunks, NULL)) goto L0006;
+        goto L0001;
+    L0006:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "StatementSep", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "StatementSep", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
 static pcc_thunk_chunk_t *pcc_evaluate_rule_LetStatement(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
     chunk->pos = ctx->cur;
@@ -1103,6 +1265,13 @@ static pcc_thunk_chunk_t *pcc_evaluate_rule_LetStatement(cactus_context_t *ctx) 
     pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
     pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
     if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LET, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_WORD_BOUNDARY, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_IDENTIFIER, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_ASSIGN, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Expression, &chunk->thunks, NULL)) goto L0000;
     ctx->level--;
     PCC_DEBUG(PCC_DBG_MATCH, "LetStatement", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     return chunk;
@@ -1113,32 +1282,1824 @@ L0000:;
     return NULL;
 }
 
-static pcc_thunk_chunk_t *pcc_evaluate_rule_EOF(cactus_context_t *ctx) {
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Expression(cactus_context_t *ctx) {
     pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
     chunk->pos = ctx->cur;
-    PCC_DEBUG(PCC_DBG_EVALUATE, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    PCC_DEBUG(PCC_DBG_EVALUATE, "Expression", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
     ctx->level++;
     pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
     pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
     {
         const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Literal, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_IfExpression, &chunk->thunks, NULL)) goto L0003;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "Expression", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "Expression", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IfExpression(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "IfExpression", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_IF, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_WORD_BOUNDARY, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Expression, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Block, &chunk->thunks, NULL)) goto L0000;
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0000;
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_ELSE, &chunk->thunks, NULL)) goto L0001;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_WORD_BOUNDARY, &chunk->thunks, NULL)) goto L0001;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule__, &chunk->thunks, NULL)) goto L0001;
+        {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_Block, &chunk->thunks, NULL)) goto L0003;
+            goto L0002;
+        L0003:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_IfExpression, &chunk->thunks, NULL)) goto L0004;
+            goto L0002;
+        L0004:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            goto L0001;
+        L0002:;
+        }
+        goto L0005;
+    L0001:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+    L0005:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "IfExpression", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "IfExpression", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_Literal(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "Literal", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_BooleanLiteral, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_FloatLiteral, &chunk->thunks, NULL)) goto L0003;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_IntegerLiteral, &chunk->thunks, NULL)) goto L0004;
+        goto L0001;
+    L0004:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_RuneLiteral, &chunk->thunks, NULL)) goto L0005;
+        goto L0001;
+    L0005:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_StringLiteral, &chunk->thunks, NULL)) goto L0006;
+        goto L0001;
+    L0006:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "Literal", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "Literal", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BooleanLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "BooleanLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_FALSE, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_TRUE, &chunk->thunks, NULL)) goto L0003;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "BooleanLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "BooleanLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_FloatLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "FloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalFloatLiteral, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexFloatLiteral, &chunk->thunks, NULL)) goto L0003;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "FloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "FloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IntegerLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "IntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalIntegerLiteral, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_BinaryIntegerLiteral, &chunk->thunks, NULL)) goto L0003;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_OctalIntegerLiteral, &chunk->thunks, NULL)) goto L0004;
+        goto L0001;
+    L0004:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexIntegerLiteral, &chunk->thunks, NULL)) goto L0005;
+        goto L0001;
+    L0005:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "IntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "IntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_RuneLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "RuneLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '\''
+    ) goto L0000;
+    ctx->cur++;
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        {
+            const size_t p = ctx->cur;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '\''
+                ) goto L0005;
+                ctx->cur++;
+                goto L0004;
+            L0005:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '\\'
+                ) goto L0006;
+                ctx->cur++;
+                goto L0004;
+            L0006:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0007;
+                goto L0004;
+            L0007:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                goto L0003;
+            L0004:;
+            }
+            ctx->cur = p;
+            goto L0002;
+        L0003:;
+            ctx->cur = p;
+        }
+        {
+            int u;
+            const size_t n = pcc_get_char_as_utf32(ctx, &u);
+            if (n == 0) goto L0002;
+            ctx->cur += n;
+        }
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '\\'
+        ) goto L0008;
+        ctx->cur++;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_EscapedCharacter, &chunk->thunks, NULL)) goto L0008;
+        goto L0001;
+    L0008:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '\''
+    ) goto L0000;
+    ctx->cur++;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "RuneLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "RuneLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_StringLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "StringLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '\"'
+    ) goto L0000;
+    ctx->cur++;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                {
+                    const size_t p = ctx->cur;
+                    {
+                        const size_t p = ctx->cur;
+                        const size_t n = chunk->thunks.len;
+                        if (
+                            pcc_refill_buffer(ctx, 1) < 1 ||
+                            ctx->buffer.buf[ctx->cur] != '\"'
+                        ) goto L0006;
+                        ctx->cur++;
+                        goto L0005;
+                    L0006:;
+                        ctx->cur = p;
+                        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                        if (
+                            pcc_refill_buffer(ctx, 1) < 1 ||
+                            ctx->buffer.buf[ctx->cur] != '\\'
+                        ) goto L0007;
+                        ctx->cur++;
+                        goto L0005;
+                    L0007:;
+                        ctx->cur = p;
+                        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0008;
+                        goto L0005;
+                    L0008:;
+                        ctx->cur = p;
+                        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                        goto L0004;
+                    L0005:;
+                    }
+                    ctx->cur = p;
+                    goto L0003;
+                L0004:;
+                    ctx->cur = p;
+                }
+                {
+                    int u;
+                    const size_t n = pcc_get_char_as_utf32(ctx, &u);
+                    if (n == 0) goto L0003;
+                    ctx->cur += n;
+                }
+                goto L0002;
+            L0003:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '\\'
+                ) goto L0009;
+                ctx->cur++;
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_EscapedCharacter, &chunk->thunks, NULL)) goto L0009;
+                goto L0002;
+            L0009:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                goto L0001;
+            L0002:;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '\"'
+    ) goto L0000;
+    ctx->cur++;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "StringLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "StringLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalFloatLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "DecimalFloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigits, &chunk->thunks, NULL)) goto L0004;
+            if (
+                pcc_refill_buffer(ctx, 1) < 1 ||
+                ctx->buffer.buf[ctx->cur] != '.'
+            ) goto L0004;
+            ctx->cur++;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigits, &chunk->thunks, NULL)) goto L0005;
+                goto L0006;
+            L0005:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            L0006:;
+            }
+            goto L0003;
+        L0004:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            if (
+                pcc_refill_buffer(ctx, 1) < 1 ||
+                ctx->buffer.buf[ctx->cur] != '.'
+            ) goto L0007;
+            ctx->cur++;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigits, &chunk->thunks, NULL)) goto L0007;
+            goto L0003;
+        L0007:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            goto L0002;
+        L0003:;
+        }
+        {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalExponent, &chunk->thunks, NULL)) goto L0008;
+            goto L0009;
+        L0008:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        L0009:;
+        }
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigits, &chunk->thunks, NULL)) goto L0010;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalExponent, &chunk->thunks, NULL)) goto L0010;
+        goto L0001;
+    L0010:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "DecimalFloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "DecimalFloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexFloatLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "HexFloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '0'
+    ) goto L0000;
+    ctx->cur++;
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            u == 0x000058 ||
+            u == 0x000078
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (
+                pcc_refill_buffer(ctx, 1) < 1 ||
+                ctx->buffer.buf[ctx->cur] != '_'
+            ) goto L0003;
+            ctx->cur++;
+            goto L0004;
+        L0003:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        L0004:;
+        }
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexDigits, &chunk->thunks, NULL)) goto L0002;
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '.'
+        ) goto L0002;
+        ctx->cur++;
+        {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexDigits, &chunk->thunks, NULL)) goto L0005;
+            goto L0006;
+        L0005:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        L0006:;
+        }
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '.'
+        ) goto L0007;
+        ctx->cur++;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexDigits, &chunk->thunks, NULL)) goto L0007;
+        goto L0001;
+    L0007:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (
+                pcc_refill_buffer(ctx, 1) < 1 ||
+                ctx->buffer.buf[ctx->cur] != '_'
+            ) goto L0009;
+            ctx->cur++;
+            goto L0010;
+        L0009:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        L0010:;
+        }
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexDigits, &chunk->thunks, NULL)) goto L0008;
+        goto L0001;
+    L0008:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexExponent, &chunk->thunks, NULL)) goto L0000;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "HexFloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "HexFloatLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalExponent(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "DecimalExponent", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            u == 0x000045 ||
+            u == 0x000065
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
         {
             int u;
             const size_t n = pcc_get_char_as_utf32(ctx, &u);
             if (n == 0) goto L0001;
+            if (!(
+                u == 0x00002b ||
+                u == 0x00002d
+            )) goto L0001;
             ctx->cur += n;
         }
-        ctx->cur = p;
-        goto L0000;
+        goto L0002;
     L0001:;
         ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+    L0002:;
     }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigits, &chunk->thunks, NULL)) goto L0000;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_MATCH, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_MATCH, "DecimalExponent", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     return chunk;
 L0000:;
     ctx->level--;
-    PCC_DEBUG(PCC_DBG_NOMATCH, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    PCC_DEBUG(PCC_DBG_NOMATCH, "DecimalExponent", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexExponent(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "HexExponent", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            u == 0x000050 ||
+            u == 0x000070
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        {
+            int u;
+            const size_t n = pcc_get_char_as_utf32(ctx, &u);
+            if (n == 0) goto L0001;
+            if (!(
+                u == 0x00002b ||
+                u == 0x00002d
+            )) goto L0001;
+            ctx->cur += n;
+        }
+        goto L0002;
+    L0001:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+    L0002:;
+    }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigits, &chunk->thunks, NULL)) goto L0000;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "HexExponent", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "HexExponent", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalIntegerLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "DecimalIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '0'
+        ) goto L0002;
+        ctx->cur++;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NonZeroDigit, &chunk->thunks, NULL)) goto L0003;
+        {
+            int i;
+            for (i = 0;; i++) {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                {
+                    const size_t p = ctx->cur;
+                    const size_t n = chunk->thunks.len;
+                    if (
+                        pcc_refill_buffer(ctx, 1) < 1 ||
+                        ctx->buffer.buf[ctx->cur] != '_'
+                    ) goto L0005;
+                    ctx->cur++;
+                    goto L0006;
+                L0005:;
+                    ctx->cur = p;
+                    pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                L0006:;
+                }
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigit, &chunk->thunks, NULL)) goto L0004;
+                if (ctx->cur == p) break;
+                continue;
+            L0004:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                break;
+            }
+        }
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "DecimalIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "DecimalIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BinaryIntegerLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "BinaryIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '0'
+    ) goto L0000;
+    ctx->cur++;
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            u == 0x000042 ||
+            u == 0x000062
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    {
+        const size_t p0 = ctx->cur;
+        const size_t n0 = chunk->thunks.len;
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '_'
+                ) goto L0002;
+                ctx->cur++;
+                goto L0003;
+            L0002:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            L0003:;
+            }
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_BinaryDigit, &chunk->thunks, NULL)) goto L0001;
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+        if (i < 1) {
+            ctx->cur = p0;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n0);
+            goto L0000;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "BinaryIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "BinaryIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_OctalIntegerLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "OctalIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '0'
+    ) goto L0000;
+    ctx->cur++;
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        {
+            int u;
+            const size_t n = pcc_get_char_as_utf32(ctx, &u);
+            if (n == 0) goto L0001;
+            if (!(
+                u == 0x00004f ||
+                u == 0x00006f
+            )) goto L0001;
+            ctx->cur += n;
+        }
+        goto L0002;
+    L0001:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+    L0002:;
+    }
+    {
+        const size_t p0 = ctx->cur;
+        const size_t n0 = chunk->thunks.len;
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '_'
+                ) goto L0004;
+                ctx->cur++;
+                goto L0005;
+            L0004:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            L0005:;
+            }
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_OctalDigit, &chunk->thunks, NULL)) goto L0003;
+            if (ctx->cur == p) break;
+            continue;
+        L0003:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+        if (i < 1) {
+            ctx->cur = p0;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n0);
+            goto L0000;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "OctalIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "OctalIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexIntegerLiteral(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "HexIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '0'
+    ) goto L0000;
+    ctx->cur++;
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            u == 0x000058 ||
+            u == 0x000078
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    {
+        const size_t p0 = ctx->cur;
+        const size_t n0 = chunk->thunks.len;
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '_'
+                ) goto L0002;
+                ctx->cur++;
+                goto L0003;
+            L0002:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            L0003:;
+            }
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexDigit, &chunk->thunks, NULL)) goto L0001;
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+        if (i < 1) {
+            ctx->cur = p0;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n0);
+            goto L0000;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "HexIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "HexIntegerLiteral", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalDigits(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "DecimalDigits", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigit, &chunk->thunks, NULL)) goto L0000;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '_'
+                ) goto L0002;
+                ctx->cur++;
+                goto L0003;
+            L0002:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            L0003:;
+            }
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_DecimalDigit, &chunk->thunks, NULL)) goto L0001;
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "DecimalDigits", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "DecimalDigits", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexDigits(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "HexDigits", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexDigit, &chunk->thunks, NULL)) goto L0000;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (
+                    pcc_refill_buffer(ctx, 1) < 1 ||
+                    ctx->buffer.buf[ctx->cur] != '_'
+                ) goto L0002;
+                ctx->cur++;
+                goto L0003;
+            L0002:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            L0003:;
+            }
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_HexDigit, &chunk->thunks, NULL)) goto L0001;
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "HexDigits", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "HexDigits", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_DecimalDigit(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "DecimalDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            (u >= 0x000030 && u <= 0x000039)
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "DecimalDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "DecimalDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_NonZeroDigit(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "NonZeroDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            (u >= 0x000031 && u <= 0x000039)
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "NonZeroDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "NonZeroDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BinaryDigit(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "BinaryDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            u == 0x000030 ||
+            u == 0x000031
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "BinaryDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "BinaryDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_OctalDigit(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "OctalDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            (u >= 0x000030 && u <= 0x000037)
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "OctalDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "OctalDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_HexDigit(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "HexDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            (u >= 0x000030 && u <= 0x000039) ||
+            (u >= 0x000041 && u <= 0x000046) ||
+            (u >= 0x000061 && u <= 0x000066)
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "HexDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "HexDigit", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_EscapedCharacter(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "EscapedCharacter", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '\"'
+        ) goto L0002;
+        ctx->cur++;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '\''
+        ) goto L0003;
+        ctx->cur++;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '\\'
+        ) goto L0004;
+        ctx->cur++;
+        goto L0001;
+    L0004:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != 'b'
+        ) goto L0005;
+        ctx->cur++;
+        goto L0001;
+    L0005:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != 'f'
+        ) goto L0006;
+        ctx->cur++;
+        goto L0001;
+    L0006:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != 'n'
+        ) goto L0007;
+        ctx->cur++;
+        goto L0001;
+    L0007:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != 'r'
+        ) goto L0008;
+        ctx->cur++;
+        goto L0001;
+    L0008:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != 't'
+        ) goto L0009;
+        ctx->cur++;
+        goto L0001;
+    L0009:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != 'v'
+        ) goto L0010;
+        ctx->cur++;
+        goto L0001;
+    L0010:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "EscapedCharacter", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "EscapedCharacter", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule__(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "_", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_WhiteSpace, &chunk->thunks, NULL)) goto L0003;
+                goto L0002;
+            L0003:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_BlockInlineComment, &chunk->thunks, NULL)) goto L0004;
+                goto L0002;
+            L0004:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                goto L0001;
+            L0002:;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "_", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule___(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "__", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                const size_t n = chunk->thunks.len;
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_WhiteSpace, &chunk->thunks, NULL)) goto L0003;
+                goto L0002;
+            L0003:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0004;
+                goto L0002;
+            L0004:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_BlockComment, &chunk->thunks, NULL)) goto L0005;
+                goto L0002;
+            L0005:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LineComment, &chunk->thunks, NULL)) goto L0006;
+                goto L0002;
+            L0006:;
+                ctx->cur = p;
+                pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                goto L0001;
+            L0002:;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "__", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_WhiteSpace(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "WhiteSpace", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p0 = ctx->cur;
+        const size_t n0 = chunk->thunks.len;
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                int u;
+                const size_t n = pcc_get_char_as_utf32(ctx, &u);
+                if (n == 0) goto L0001;
+                if (!(
+                    u == 0x000020 ||
+                    u == 0x000009 ||
+                    u == 0x00000c
+                )) goto L0001;
+                ctx->cur += n;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+        if (i < 1) {
+            ctx->cur = p0;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n0);
+            goto L0000;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "WhiteSpace", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "WhiteSpace", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BlockComment(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "BlockComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != '/' ||
+        (ctx->buffer.buf + ctx->cur)[1] != '*'
+    ) goto L0000;
+    ctx->cur += 2;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                if (
+                    pcc_refill_buffer(ctx, 2) < 2 ||
+                    (ctx->buffer.buf + ctx->cur)[0] != '*' ||
+                    (ctx->buffer.buf + ctx->cur)[1] != '/'
+                ) goto L0002;
+                ctx->cur += 2;
+                ctx->cur = p;
+                goto L0001;
+            L0002:;
+                ctx->cur = p;
+            }
+            {
+                int u;
+                const size_t n = pcc_get_char_as_utf32(ctx, &u);
+                if (n == 0) goto L0001;
+                ctx->cur += n;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != '*' ||
+        (ctx->buffer.buf + ctx->cur)[1] != '/'
+    ) goto L0000;
+    ctx->cur += 2;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "BlockComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "BlockComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BlockInlineComment(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "BlockInlineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != '/' ||
+        (ctx->buffer.buf + ctx->cur)[1] != '*'
+    ) goto L0000;
+    ctx->cur += 2;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                {
+                    const size_t p = ctx->cur;
+                    const size_t n = chunk->thunks.len;
+                    if (
+                        pcc_refill_buffer(ctx, 2) < 2 ||
+                        (ctx->buffer.buf + ctx->cur)[0] != '*' ||
+                        (ctx->buffer.buf + ctx->cur)[1] != '/'
+                    ) goto L0004;
+                    ctx->cur += 2;
+                    goto L0003;
+                L0004:;
+                    ctx->cur = p;
+                    pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0005;
+                    goto L0003;
+                L0005:;
+                    ctx->cur = p;
+                    pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                    goto L0002;
+                L0003:;
+                }
+                ctx->cur = p;
+                goto L0001;
+            L0002:;
+                ctx->cur = p;
+            }
+            {
+                int u;
+                const size_t n = pcc_get_char_as_utf32(ctx, &u);
+                if (n == 0) goto L0001;
+                ctx->cur += n;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != '*' ||
+        (ctx->buffer.buf + ctx->cur)[1] != '/'
+    ) goto L0000;
+    ctx->cur += 2;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "BlockInlineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "BlockInlineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_BlockMultilineComment(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "BlockMultilineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != '/' ||
+        (ctx->buffer.buf + ctx->cur)[1] != '*'
+    ) goto L0000;
+    ctx->cur += 2;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                {
+                    const size_t p = ctx->cur;
+                    const size_t n = chunk->thunks.len;
+                    if (
+                        pcc_refill_buffer(ctx, 2) < 2 ||
+                        (ctx->buffer.buf + ctx->cur)[0] != '*' ||
+                        (ctx->buffer.buf + ctx->cur)[1] != '/'
+                    ) goto L0004;
+                    ctx->cur += 2;
+                    goto L0003;
+                L0004:;
+                    ctx->cur = p;
+                    pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0005;
+                    goto L0003;
+                L0005:;
+                    ctx->cur = p;
+                    pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+                    goto L0002;
+                L0003:;
+                }
+                ctx->cur = p;
+                goto L0001;
+            L0002:;
+                ctx->cur = p;
+            }
+            {
+                int u;
+                const size_t n = pcc_get_char_as_utf32(ctx, &u);
+                if (n == 0) goto L0001;
+                ctx->cur += n;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0000;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                if (
+                    pcc_refill_buffer(ctx, 2) < 2 ||
+                    (ctx->buffer.buf + ctx->cur)[0] != '*' ||
+                    (ctx->buffer.buf + ctx->cur)[1] != '/'
+                ) goto L0007;
+                ctx->cur += 2;
+                ctx->cur = p;
+                goto L0006;
+            L0007:;
+                ctx->cur = p;
+            }
+            {
+                int u;
+                const size_t n = pcc_get_char_as_utf32(ctx, &u);
+                if (n == 0) goto L0006;
+                ctx->cur += n;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0006:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != '*' ||
+        (ctx->buffer.buf + ctx->cur)[1] != '/'
+    ) goto L0000;
+    ctx->cur += 2;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "BlockMultilineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "BlockMultilineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LineComment(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "LineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != '/' ||
+        (ctx->buffer.buf + ctx->cur)[1] != '/'
+    ) goto L0000;
+    ctx->cur += 2;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            {
+                const size_t p = ctx->cur;
+                if (!pcc_apply_rule(ctx, pcc_evaluate_rule_NEWLINE, &chunk->thunks, NULL)) goto L0002;
+                ctx->cur = p;
+                goto L0001;
+            L0002:;
+                ctx->cur = p;
+            }
+            {
+                int u;
+                const size_t n = pcc_get_char_as_utf32(ctx, &u);
+                if (n == 0) goto L0001;
+                ctx->cur += n;
+            }
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "LineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "LineComment", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_ELSE(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "ELSE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 4) < 4 ||
+        (ctx->buffer.buf + ctx->cur)[0] != 'e' ||
+        (ctx->buffer.buf + ctx->cur)[1] != 'l' ||
+        (ctx->buffer.buf + ctx->cur)[2] != 's' ||
+        (ctx->buffer.buf + ctx->cur)[3] != 'e'
+    ) goto L0000;
+    ctx->cur += 4;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "ELSE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "ELSE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_FALSE(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "FALSE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 5) < 5 ||
+        (ctx->buffer.buf + ctx->cur)[0] != 'f' ||
+        (ctx->buffer.buf + ctx->cur)[1] != 'a' ||
+        (ctx->buffer.buf + ctx->cur)[2] != 'l' ||
+        (ctx->buffer.buf + ctx->cur)[3] != 's' ||
+        (ctx->buffer.buf + ctx->cur)[4] != 'e'
+    ) goto L0000;
+    ctx->cur += 5;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "FALSE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "FALSE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IF(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "IF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 2) < 2 ||
+        (ctx->buffer.buf + ctx->cur)[0] != 'i' ||
+        (ctx->buffer.buf + ctx->cur)[1] != 'f'
+    ) goto L0000;
+    ctx->cur += 2;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "IF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "IF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     pcc_thunk_chunk__destroy(ctx->auxil, chunk);
     return NULL;
 }
@@ -1190,6 +3151,1988 @@ static pcc_thunk_chunk_t *pcc_evaluate_rule_LET(cactus_context_t *ctx) {
 L0000:;
     ctx->level--;
     PCC_DEBUG(PCC_DBG_NOMATCH, "LET", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_TRUE(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "TRUE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 4) < 4 ||
+        (ctx->buffer.buf + ctx->cur)[0] != 't' ||
+        (ctx->buffer.buf + ctx->cur)[1] != 'r' ||
+        (ctx->buffer.buf + ctx->cur)[2] != 'u' ||
+        (ctx->buffer.buf + ctx->cur)[3] != 'e'
+    ) goto L0000;
+    ctx->cur += 4;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "TRUE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "TRUE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_EOF(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        {
+            int u;
+            const size_t n = pcc_get_char_as_utf32(ctx, &u);
+            if (n == 0) goto L0001;
+            ctx->cur += n;
+        }
+        ctx->cur = p;
+        goto L0000;
+    L0001:;
+        ctx->cur = p;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "EOF", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_NEWLINE(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "NEWLINE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '\n'
+        ) goto L0002;
+        ctx->cur++;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 2) < 2 ||
+            (ctx->buffer.buf + ctx->cur)[0] != '\r' ||
+            (ctx->buffer.buf + ctx->cur)[1] != '\n'
+        ) goto L0003;
+        ctx->cur += 2;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '\r'
+        ) goto L0004;
+        ctx->cur++;
+        goto L0001;
+    L0004:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "NEWLINE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "NEWLINE", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_ASSIGN(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "ASSIGN", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '='
+    ) goto L0000;
+    ctx->cur++;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "ASSIGN", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "ASSIGN", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_SEMI(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "SEMI", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != ';'
+    ) goto L0000;
+    ctx->cur++;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "SEMI", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "SEMI", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_L_CURLY(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "L_CURLY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '{'
+    ) goto L0000;
+    ctx->cur++;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "L_CURLY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "L_CURLY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_R_CURLY(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "R_CURLY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (
+        pcc_refill_buffer(ctx, 1) < 1 ||
+        ctx->buffer.buf[ctx->cur] != '}'
+    ) goto L0000;
+    ctx->cur++;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "R_CURLY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "R_CURLY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LETTER(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "LETTER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_UNICODE_LETTER, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (
+            pcc_refill_buffer(ctx, 1) < 1 ||
+            ctx->buffer.buf[ctx->cur] != '_'
+        ) goto L0003;
+        ctx->cur++;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "LETTER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "LETTER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_LETTER_OR_DIGIT(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "LETTER_OR_DIGIT", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        const size_t n = chunk->thunks.len;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LETTER, &chunk->thunks, NULL)) goto L0002;
+        goto L0001;
+    L0002:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_UNICODE_DIGIT, &chunk->thunks, NULL)) goto L0003;
+        goto L0001;
+    L0003:;
+        ctx->cur = p;
+        pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+        goto L0000;
+    L0001:;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "LETTER_OR_DIGIT", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "LETTER_OR_DIGIT", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_IDENTIFIER(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "IDENTIFIER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LETTER, &chunk->thunks, NULL)) goto L0000;
+    {
+        int i;
+        for (i = 0;; i++) {
+            const size_t p = ctx->cur;
+            const size_t n = chunk->thunks.len;
+            if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LETTER_OR_DIGIT, &chunk->thunks, NULL)) goto L0001;
+            if (ctx->cur == p) break;
+            continue;
+        L0001:;
+            ctx->cur = p;
+            pcc_thunk_array__revert(ctx->auxil, &chunk->thunks, n);
+            break;
+        }
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "IDENTIFIER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "IDENTIFIER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_WORD_BOUNDARY(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "WORD_BOUNDARY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        const size_t p = ctx->cur;
+        if (!pcc_apply_rule(ctx, pcc_evaluate_rule_LETTER_OR_DIGIT, &chunk->thunks, NULL)) goto L0001;
+        ctx->cur = p;
+        goto L0000;
+    L0001:;
+        ctx->cur = p;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "WORD_BOUNDARY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "WORD_BOUNDARY", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_UNICODE_LETTER(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "UNICODE_LETTER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            (u >= 0x000041 && u <= 0x00005a) ||
+            (u >= 0x000061 && u <= 0x00007a) ||
+            u == 0x0000aa ||
+            u == 0x0000b5 ||
+            u == 0x0000ba ||
+            (u >= 0x0000c0 && u <= 0x0000d6) ||
+            (u >= 0x0000d8 && u <= 0x0000de) ||
+            (u >= 0x0000df && u <= 0x0000f6) ||
+            (u >= 0x0000f8 && u <= 0x0000ff) ||
+            u == 0x000100 ||
+            u == 0x000101 ||
+            u == 0x000102 ||
+            u == 0x000103 ||
+            u == 0x000104 ||
+            u == 0x000105 ||
+            u == 0x000106 ||
+            u == 0x000107 ||
+            u == 0x000108 ||
+            u == 0x000109 ||
+            u == 0x00010a ||
+            u == 0x00010b ||
+            u == 0x00010c ||
+            u == 0x00010d ||
+            u == 0x00010e ||
+            u == 0x00010f ||
+            u == 0x000110 ||
+            u == 0x000111 ||
+            u == 0x000112 ||
+            u == 0x000113 ||
+            u == 0x000114 ||
+            u == 0x000115 ||
+            u == 0x000116 ||
+            u == 0x000117 ||
+            u == 0x000118 ||
+            u == 0x000119 ||
+            u == 0x00011a ||
+            u == 0x00011b ||
+            u == 0x00011c ||
+            u == 0x00011d ||
+            u == 0x00011e ||
+            u == 0x00011f ||
+            u == 0x000120 ||
+            u == 0x000121 ||
+            u == 0x000122 ||
+            u == 0x000123 ||
+            u == 0x000124 ||
+            u == 0x000125 ||
+            u == 0x000126 ||
+            u == 0x000127 ||
+            u == 0x000128 ||
+            u == 0x000129 ||
+            u == 0x00012a ||
+            u == 0x00012b ||
+            u == 0x00012c ||
+            u == 0x00012d ||
+            u == 0x00012e ||
+            u == 0x00012f ||
+            u == 0x000130 ||
+            u == 0x000131 ||
+            u == 0x000132 ||
+            u == 0x000133 ||
+            u == 0x000134 ||
+            u == 0x000135 ||
+            u == 0x000136 ||
+            (u >= 0x000137 && u <= 0x000138) ||
+            u == 0x000139 ||
+            u == 0x00013a ||
+            u == 0x00013b ||
+            u == 0x00013c ||
+            u == 0x00013d ||
+            u == 0x00013e ||
+            u == 0x00013f ||
+            u == 0x000140 ||
+            u == 0x000141 ||
+            u == 0x000142 ||
+            u == 0x000143 ||
+            u == 0x000144 ||
+            u == 0x000145 ||
+            u == 0x000146 ||
+            u == 0x000147 ||
+            (u >= 0x000148 && u <= 0x000149) ||
+            u == 0x00014a ||
+            u == 0x00014b ||
+            u == 0x00014c ||
+            u == 0x00014d ||
+            u == 0x00014e ||
+            u == 0x00014f ||
+            u == 0x000150 ||
+            u == 0x000151 ||
+            u == 0x000152 ||
+            u == 0x000153 ||
+            u == 0x000154 ||
+            u == 0x000155 ||
+            u == 0x000156 ||
+            u == 0x000157 ||
+            u == 0x000158 ||
+            u == 0x000159 ||
+            u == 0x00015a ||
+            u == 0x00015b ||
+            u == 0x00015c ||
+            u == 0x00015d ||
+            u == 0x00015e ||
+            u == 0x00015f ||
+            u == 0x000160 ||
+            u == 0x000161 ||
+            u == 0x000162 ||
+            u == 0x000163 ||
+            u == 0x000164 ||
+            u == 0x000165 ||
+            u == 0x000166 ||
+            u == 0x000167 ||
+            u == 0x000168 ||
+            u == 0x000169 ||
+            u == 0x00016a ||
+            u == 0x00016b ||
+            u == 0x00016c ||
+            u == 0x00016d ||
+            u == 0x00016e ||
+            u == 0x00016f ||
+            u == 0x000170 ||
+            u == 0x000171 ||
+            u == 0x000172 ||
+            u == 0x000173 ||
+            u == 0x000174 ||
+            u == 0x000175 ||
+            u == 0x000176 ||
+            u == 0x000177 ||
+            (u >= 0x000178 && u <= 0x000179) ||
+            u == 0x00017a ||
+            u == 0x00017b ||
+            u == 0x00017c ||
+            u == 0x00017d ||
+            (u >= 0x00017e && u <= 0x000180) ||
+            (u >= 0x000181 && u <= 0x000182) ||
+            u == 0x000183 ||
+            u == 0x000184 ||
+            u == 0x000185 ||
+            (u >= 0x000186 && u <= 0x000187) ||
+            u == 0x000188 ||
+            (u >= 0x000189 && u <= 0x00018b) ||
+            (u >= 0x00018c && u <= 0x00018d) ||
+            (u >= 0x00018e && u <= 0x000191) ||
+            u == 0x000192 ||
+            (u >= 0x000193 && u <= 0x000194) ||
+            u == 0x000195 ||
+            (u >= 0x000196 && u <= 0x000198) ||
+            (u >= 0x000199 && u <= 0x00019b) ||
+            (u >= 0x00019c && u <= 0x00019d) ||
+            u == 0x00019e ||
+            (u >= 0x00019f && u <= 0x0001a0) ||
+            u == 0x0001a1 ||
+            u == 0x0001a2 ||
+            u == 0x0001a3 ||
+            u == 0x0001a4 ||
+            u == 0x0001a5 ||
+            (u >= 0x0001a6 && u <= 0x0001a7) ||
+            u == 0x0001a8 ||
+            u == 0x0001a9 ||
+            (u >= 0x0001aa && u <= 0x0001ab) ||
+            u == 0x0001ac ||
+            u == 0x0001ad ||
+            (u >= 0x0001ae && u <= 0x0001af) ||
+            u == 0x0001b0 ||
+            (u >= 0x0001b1 && u <= 0x0001b3) ||
+            u == 0x0001b4 ||
+            u == 0x0001b5 ||
+            u == 0x0001b6 ||
+            (u >= 0x0001b7 && u <= 0x0001b8) ||
+            (u >= 0x0001b9 && u <= 0x0001ba) ||
+            u == 0x0001bb ||
+            u == 0x0001bc ||
+            (u >= 0x0001bd && u <= 0x0001bf) ||
+            (u >= 0x0001c0 && u <= 0x0001c3) ||
+            u == 0x0001c4 ||
+            u == 0x0001c5 ||
+            u == 0x0001c6 ||
+            u == 0x0001c7 ||
+            u == 0x0001c8 ||
+            u == 0x0001c9 ||
+            u == 0x0001ca ||
+            u == 0x0001cb ||
+            u == 0x0001cc ||
+            u == 0x0001cd ||
+            u == 0x0001ce ||
+            u == 0x0001cf ||
+            u == 0x0001d0 ||
+            u == 0x0001d1 ||
+            u == 0x0001d2 ||
+            u == 0x0001d3 ||
+            u == 0x0001d4 ||
+            u == 0x0001d5 ||
+            u == 0x0001d6 ||
+            u == 0x0001d7 ||
+            u == 0x0001d8 ||
+            u == 0x0001d9 ||
+            u == 0x0001da ||
+            u == 0x0001db ||
+            (u >= 0x0001dc && u <= 0x0001dd) ||
+            u == 0x0001de ||
+            u == 0x0001df ||
+            u == 0x0001e0 ||
+            u == 0x0001e1 ||
+            u == 0x0001e2 ||
+            u == 0x0001e3 ||
+            u == 0x0001e4 ||
+            u == 0x0001e5 ||
+            u == 0x0001e6 ||
+            u == 0x0001e7 ||
+            u == 0x0001e8 ||
+            u == 0x0001e9 ||
+            u == 0x0001ea ||
+            u == 0x0001eb ||
+            u == 0x0001ec ||
+            u == 0x0001ed ||
+            u == 0x0001ee ||
+            (u >= 0x0001ef && u <= 0x0001f0) ||
+            u == 0x0001f1 ||
+            u == 0x0001f2 ||
+            u == 0x0001f3 ||
+            u == 0x0001f4 ||
+            u == 0x0001f5 ||
+            (u >= 0x0001f6 && u <= 0x0001f8) ||
+            u == 0x0001f9 ||
+            u == 0x0001fa ||
+            u == 0x0001fb ||
+            u == 0x0001fc ||
+            u == 0x0001fd ||
+            u == 0x0001fe ||
+            u == 0x0001ff ||
+            u == 0x000200 ||
+            u == 0x000201 ||
+            u == 0x000202 ||
+            u == 0x000203 ||
+            u == 0x000204 ||
+            u == 0x000205 ||
+            u == 0x000206 ||
+            u == 0x000207 ||
+            u == 0x000208 ||
+            u == 0x000209 ||
+            u == 0x00020a ||
+            u == 0x00020b ||
+            u == 0x00020c ||
+            u == 0x00020d ||
+            u == 0x00020e ||
+            u == 0x00020f ||
+            u == 0x000210 ||
+            u == 0x000211 ||
+            u == 0x000212 ||
+            u == 0x000213 ||
+            u == 0x000214 ||
+            u == 0x000215 ||
+            u == 0x000216 ||
+            u == 0x000217 ||
+            u == 0x000218 ||
+            u == 0x000219 ||
+            u == 0x00021a ||
+            u == 0x00021b ||
+            u == 0x00021c ||
+            u == 0x00021d ||
+            u == 0x00021e ||
+            u == 0x00021f ||
+            u == 0x000220 ||
+            u == 0x000221 ||
+            u == 0x000222 ||
+            u == 0x000223 ||
+            u == 0x000224 ||
+            u == 0x000225 ||
+            u == 0x000226 ||
+            u == 0x000227 ||
+            u == 0x000228 ||
+            u == 0x000229 ||
+            u == 0x00022a ||
+            u == 0x00022b ||
+            u == 0x00022c ||
+            u == 0x00022d ||
+            u == 0x00022e ||
+            u == 0x00022f ||
+            u == 0x000230 ||
+            u == 0x000231 ||
+            u == 0x000232 ||
+            (u >= 0x000233 && u <= 0x000239) ||
+            (u >= 0x00023a && u <= 0x00023b) ||
+            u == 0x00023c ||
+            (u >= 0x00023d && u <= 0x00023e) ||
+            (u >= 0x00023f && u <= 0x000240) ||
+            u == 0x000241 ||
+            u == 0x000242 ||
+            (u >= 0x000243 && u <= 0x000246) ||
+            u == 0x000247 ||
+            u == 0x000248 ||
+            u == 0x000249 ||
+            u == 0x00024a ||
+            u == 0x00024b ||
+            u == 0x00024c ||
+            u == 0x00024d ||
+            u == 0x00024e ||
+            (u >= 0x00024f && u <= 0x000293) ||
+            u == 0x000294 ||
+            (u >= 0x000295 && u <= 0x0002af) ||
+            (u >= 0x0002b0 && u <= 0x0002c1) ||
+            (u >= 0x0002c6 && u <= 0x0002d1) ||
+            (u >= 0x0002e0 && u <= 0x0002e4) ||
+            u == 0x0002ec ||
+            u == 0x0002ee ||
+            u == 0x000370 ||
+            u == 0x000371 ||
+            u == 0x000372 ||
+            u == 0x000373 ||
+            u == 0x000374 ||
+            u == 0x000376 ||
+            u == 0x000377 ||
+            u == 0x00037a ||
+            (u >= 0x00037b && u <= 0x00037d) ||
+            u == 0x00037f ||
+            u == 0x000386 ||
+            (u >= 0x000388 && u <= 0x00038a) ||
+            u == 0x00038c ||
+            (u >= 0x00038e && u <= 0x00038f) ||
+            u == 0x000390 ||
+            (u >= 0x000391 && u <= 0x0003a1) ||
+            (u >= 0x0003a3 && u <= 0x0003ab) ||
+            (u >= 0x0003ac && u <= 0x0003ce) ||
+            u == 0x0003cf ||
+            (u >= 0x0003d0 && u <= 0x0003d1) ||
+            (u >= 0x0003d2 && u <= 0x0003d4) ||
+            (u >= 0x0003d5 && u <= 0x0003d7) ||
+            u == 0x0003d8 ||
+            u == 0x0003d9 ||
+            u == 0x0003da ||
+            u == 0x0003db ||
+            u == 0x0003dc ||
+            u == 0x0003dd ||
+            u == 0x0003de ||
+            u == 0x0003df ||
+            u == 0x0003e0 ||
+            u == 0x0003e1 ||
+            u == 0x0003e2 ||
+            u == 0x0003e3 ||
+            u == 0x0003e4 ||
+            u == 0x0003e5 ||
+            u == 0x0003e6 ||
+            u == 0x0003e7 ||
+            u == 0x0003e8 ||
+            u == 0x0003e9 ||
+            u == 0x0003ea ||
+            u == 0x0003eb ||
+            u == 0x0003ec ||
+            u == 0x0003ed ||
+            u == 0x0003ee ||
+            (u >= 0x0003ef && u <= 0x0003f3) ||
+            u == 0x0003f4 ||
+            u == 0x0003f5 ||
+            u == 0x0003f7 ||
+            u == 0x0003f8 ||
+            (u >= 0x0003f9 && u <= 0x0003fa) ||
+            (u >= 0x0003fb && u <= 0x0003fc) ||
+            (u >= 0x0003fd && u <= 0x00042f) ||
+            (u >= 0x000430 && u <= 0x00045f) ||
+            u == 0x000460 ||
+            u == 0x000461 ||
+            u == 0x000462 ||
+            u == 0x000463 ||
+            u == 0x000464 ||
+            u == 0x000465 ||
+            u == 0x000466 ||
+            u == 0x000467 ||
+            u == 0x000468 ||
+            u == 0x000469 ||
+            u == 0x00046a ||
+            u == 0x00046b ||
+            u == 0x00046c ||
+            u == 0x00046d ||
+            u == 0x00046e ||
+            u == 0x00046f ||
+            u == 0x000470 ||
+            u == 0x000471 ||
+            u == 0x000472 ||
+            u == 0x000473 ||
+            u == 0x000474 ||
+            u == 0x000475 ||
+            u == 0x000476 ||
+            u == 0x000477 ||
+            u == 0x000478 ||
+            u == 0x000479 ||
+            u == 0x00047a ||
+            u == 0x00047b ||
+            u == 0x00047c ||
+            u == 0x00047d ||
+            u == 0x00047e ||
+            u == 0x00047f ||
+            u == 0x000480 ||
+            u == 0x000481 ||
+            u == 0x00048a ||
+            u == 0x00048b ||
+            u == 0x00048c ||
+            u == 0x00048d ||
+            u == 0x00048e ||
+            u == 0x00048f ||
+            u == 0x000490 ||
+            u == 0x000491 ||
+            u == 0x000492 ||
+            u == 0x000493 ||
+            u == 0x000494 ||
+            u == 0x000495 ||
+            u == 0x000496 ||
+            u == 0x000497 ||
+            u == 0x000498 ||
+            u == 0x000499 ||
+            u == 0x00049a ||
+            u == 0x00049b ||
+            u == 0x00049c ||
+            u == 0x00049d ||
+            u == 0x00049e ||
+            u == 0x00049f ||
+            u == 0x0004a0 ||
+            u == 0x0004a1 ||
+            u == 0x0004a2 ||
+            u == 0x0004a3 ||
+            u == 0x0004a4 ||
+            u == 0x0004a5 ||
+            u == 0x0004a6 ||
+            u == 0x0004a7 ||
+            u == 0x0004a8 ||
+            u == 0x0004a9 ||
+            u == 0x0004aa ||
+            u == 0x0004ab ||
+            u == 0x0004ac ||
+            u == 0x0004ad ||
+            u == 0x0004ae ||
+            u == 0x0004af ||
+            u == 0x0004b0 ||
+            u == 0x0004b1 ||
+            u == 0x0004b2 ||
+            u == 0x0004b3 ||
+            u == 0x0004b4 ||
+            u == 0x0004b5 ||
+            u == 0x0004b6 ||
+            u == 0x0004b7 ||
+            u == 0x0004b8 ||
+            u == 0x0004b9 ||
+            u == 0x0004ba ||
+            u == 0x0004bb ||
+            u == 0x0004bc ||
+            u == 0x0004bd ||
+            u == 0x0004be ||
+            u == 0x0004bf ||
+            (u >= 0x0004c0 && u <= 0x0004c1) ||
+            u == 0x0004c2 ||
+            u == 0x0004c3 ||
+            u == 0x0004c4 ||
+            u == 0x0004c5 ||
+            u == 0x0004c6 ||
+            u == 0x0004c7 ||
+            u == 0x0004c8 ||
+            u == 0x0004c9 ||
+            u == 0x0004ca ||
+            u == 0x0004cb ||
+            u == 0x0004cc ||
+            u == 0x0004cd ||
+            (u >= 0x0004ce && u <= 0x0004cf) ||
+            u == 0x0004d0 ||
+            u == 0x0004d1 ||
+            u == 0x0004d2 ||
+            u == 0x0004d3 ||
+            u == 0x0004d4 ||
+            u == 0x0004d5 ||
+            u == 0x0004d6 ||
+            u == 0x0004d7 ||
+            u == 0x0004d8 ||
+            u == 0x0004d9 ||
+            u == 0x0004da ||
+            u == 0x0004db ||
+            u == 0x0004dc ||
+            u == 0x0004dd ||
+            u == 0x0004de ||
+            u == 0x0004df ||
+            u == 0x0004e0 ||
+            u == 0x0004e1 ||
+            u == 0x0004e2 ||
+            u == 0x0004e3 ||
+            u == 0x0004e4 ||
+            u == 0x0004e5 ||
+            u == 0x0004e6 ||
+            u == 0x0004e7 ||
+            u == 0x0004e8 ||
+            u == 0x0004e9 ||
+            u == 0x0004ea ||
+            u == 0x0004eb ||
+            u == 0x0004ec ||
+            u == 0x0004ed ||
+            u == 0x0004ee ||
+            u == 0x0004ef ||
+            u == 0x0004f0 ||
+            u == 0x0004f1 ||
+            u == 0x0004f2 ||
+            u == 0x0004f3 ||
+            u == 0x0004f4 ||
+            u == 0x0004f5 ||
+            u == 0x0004f6 ||
+            u == 0x0004f7 ||
+            u == 0x0004f8 ||
+            u == 0x0004f9 ||
+            u == 0x0004fa ||
+            u == 0x0004fb ||
+            u == 0x0004fc ||
+            u == 0x0004fd ||
+            u == 0x0004fe ||
+            u == 0x0004ff ||
+            u == 0x000500 ||
+            u == 0x000501 ||
+            u == 0x000502 ||
+            u == 0x000503 ||
+            u == 0x000504 ||
+            u == 0x000505 ||
+            u == 0x000506 ||
+            u == 0x000507 ||
+            u == 0x000508 ||
+            u == 0x000509 ||
+            u == 0x00050a ||
+            u == 0x00050b ||
+            u == 0x00050c ||
+            u == 0x00050d ||
+            u == 0x00050e ||
+            u == 0x00050f ||
+            u == 0x000510 ||
+            u == 0x000511 ||
+            u == 0x000512 ||
+            u == 0x000513 ||
+            u == 0x000514 ||
+            u == 0x000515 ||
+            u == 0x000516 ||
+            u == 0x000517 ||
+            u == 0x000518 ||
+            u == 0x000519 ||
+            u == 0x00051a ||
+            u == 0x00051b ||
+            u == 0x00051c ||
+            u == 0x00051d ||
+            u == 0x00051e ||
+            u == 0x00051f ||
+            u == 0x000520 ||
+            u == 0x000521 ||
+            u == 0x000522 ||
+            u == 0x000523 ||
+            u == 0x000524 ||
+            u == 0x000525 ||
+            u == 0x000526 ||
+            u == 0x000527 ||
+            u == 0x000528 ||
+            u == 0x000529 ||
+            u == 0x00052a ||
+            u == 0x00052b ||
+            u == 0x00052c ||
+            u == 0x00052d ||
+            u == 0x00052e ||
+            u == 0x00052f ||
+            (u >= 0x000531 && u <= 0x000556) ||
+            u == 0x000559 ||
+            (u >= 0x000560 && u <= 0x000588) ||
+            (u >= 0x0005d0 && u <= 0x0005ea) ||
+            (u >= 0x0005ef && u <= 0x0005f2) ||
+            (u >= 0x000620 && u <= 0x00063f) ||
+            u == 0x000640 ||
+            (u >= 0x000641 && u <= 0x00064a) ||
+            (u >= 0x00066e && u <= 0x00066f) ||
+            (u >= 0x000671 && u <= 0x0006d3) ||
+            u == 0x0006d5 ||
+            (u >= 0x0006e5 && u <= 0x0006e6) ||
+            (u >= 0x0006ee && u <= 0x0006ef) ||
+            (u >= 0x0006fa && u <= 0x0006fc) ||
+            u == 0x0006ff ||
+            u == 0x000710 ||
+            (u >= 0x000712 && u <= 0x00072f) ||
+            (u >= 0x00074d && u <= 0x0007a5) ||
+            u == 0x0007b1 ||
+            (u >= 0x0007ca && u <= 0x0007ea) ||
+            (u >= 0x0007f4 && u <= 0x0007f5) ||
+            u == 0x0007fa ||
+            (u >= 0x000800 && u <= 0x000815) ||
+            u == 0x00081a ||
+            u == 0x000824 ||
+            u == 0x000828 ||
+            (u >= 0x000840 && u <= 0x000858) ||
+            (u >= 0x000860 && u <= 0x00086a) ||
+            (u >= 0x0008a0 && u <= 0x0008b4) ||
+            (u >= 0x0008b6 && u <= 0x0008c7) ||
+            (u >= 0x000904 && u <= 0x000939) ||
+            u == 0x00093d ||
+            u == 0x000950 ||
+            (u >= 0x000958 && u <= 0x000961) ||
+            u == 0x000971 ||
+            (u >= 0x000972 && u <= 0x000980) ||
+            (u >= 0x000985 && u <= 0x00098c) ||
+            (u >= 0x00098f && u <= 0x000990) ||
+            (u >= 0x000993 && u <= 0x0009a8) ||
+            (u >= 0x0009aa && u <= 0x0009b0) ||
+            u == 0x0009b2 ||
+            (u >= 0x0009b6 && u <= 0x0009b9) ||
+            u == 0x0009bd ||
+            u == 0x0009ce ||
+            (u >= 0x0009dc && u <= 0x0009dd) ||
+            (u >= 0x0009df && u <= 0x0009e1) ||
+            (u >= 0x0009f0 && u <= 0x0009f1) ||
+            u == 0x0009fc ||
+            (u >= 0x000a05 && u <= 0x000a0a) ||
+            (u >= 0x000a0f && u <= 0x000a10) ||
+            (u >= 0x000a13 && u <= 0x000a28) ||
+            (u >= 0x000a2a && u <= 0x000a30) ||
+            (u >= 0x000a32 && u <= 0x000a33) ||
+            (u >= 0x000a35 && u <= 0x000a36) ||
+            (u >= 0x000a38 && u <= 0x000a39) ||
+            (u >= 0x000a59 && u <= 0x000a5c) ||
+            u == 0x000a5e ||
+            (u >= 0x000a72 && u <= 0x000a74) ||
+            (u >= 0x000a85 && u <= 0x000a8d) ||
+            (u >= 0x000a8f && u <= 0x000a91) ||
+            (u >= 0x000a93 && u <= 0x000aa8) ||
+            (u >= 0x000aaa && u <= 0x000ab0) ||
+            (u >= 0x000ab2 && u <= 0x000ab3) ||
+            (u >= 0x000ab5 && u <= 0x000ab9) ||
+            u == 0x000abd ||
+            u == 0x000ad0 ||
+            (u >= 0x000ae0 && u <= 0x000ae1) ||
+            u == 0x000af9 ||
+            (u >= 0x000b05 && u <= 0x000b0c) ||
+            (u >= 0x000b0f && u <= 0x000b10) ||
+            (u >= 0x000b13 && u <= 0x000b28) ||
+            (u >= 0x000b2a && u <= 0x000b30) ||
+            (u >= 0x000b32 && u <= 0x000b33) ||
+            (u >= 0x000b35 && u <= 0x000b39) ||
+            u == 0x000b3d ||
+            (u >= 0x000b5c && u <= 0x000b5d) ||
+            (u >= 0x000b5f && u <= 0x000b61) ||
+            u == 0x000b71 ||
+            u == 0x000b83 ||
+            (u >= 0x000b85 && u <= 0x000b8a) ||
+            (u >= 0x000b8e && u <= 0x000b90) ||
+            (u >= 0x000b92 && u <= 0x000b95) ||
+            (u >= 0x000b99 && u <= 0x000b9a) ||
+            u == 0x000b9c ||
+            (u >= 0x000b9e && u <= 0x000b9f) ||
+            (u >= 0x000ba3 && u <= 0x000ba4) ||
+            (u >= 0x000ba8 && u <= 0x000baa) ||
+            (u >= 0x000bae && u <= 0x000bb9) ||
+            u == 0x000bd0 ||
+            (u >= 0x000c05 && u <= 0x000c0c) ||
+            (u >= 0x000c0e && u <= 0x000c10) ||
+            (u >= 0x000c12 && u <= 0x000c28) ||
+            (u >= 0x000c2a && u <= 0x000c39) ||
+            u == 0x000c3d ||
+            (u >= 0x000c58 && u <= 0x000c5a) ||
+            (u >= 0x000c60 && u <= 0x000c61) ||
+            u == 0x000c80 ||
+            (u >= 0x000c85 && u <= 0x000c8c) ||
+            (u >= 0x000c8e && u <= 0x000c90) ||
+            (u >= 0x000c92 && u <= 0x000ca8) ||
+            (u >= 0x000caa && u <= 0x000cb3) ||
+            (u >= 0x000cb5 && u <= 0x000cb9) ||
+            u == 0x000cbd ||
+            u == 0x000cde ||
+            (u >= 0x000ce0 && u <= 0x000ce1) ||
+            (u >= 0x000cf1 && u <= 0x000cf2) ||
+            (u >= 0x000d04 && u <= 0x000d0c) ||
+            (u >= 0x000d0e && u <= 0x000d10) ||
+            (u >= 0x000d12 && u <= 0x000d3a) ||
+            u == 0x000d3d ||
+            u == 0x000d4e ||
+            (u >= 0x000d54 && u <= 0x000d56) ||
+            (u >= 0x000d5f && u <= 0x000d61) ||
+            (u >= 0x000d7a && u <= 0x000d7f) ||
+            (u >= 0x000d85 && u <= 0x000d96) ||
+            (u >= 0x000d9a && u <= 0x000db1) ||
+            (u >= 0x000db3 && u <= 0x000dbb) ||
+            u == 0x000dbd ||
+            (u >= 0x000dc0 && u <= 0x000dc6) ||
+            (u >= 0x000e01 && u <= 0x000e30) ||
+            (u >= 0x000e32 && u <= 0x000e33) ||
+            (u >= 0x000e40 && u <= 0x000e45) ||
+            u == 0x000e46 ||
+            (u >= 0x000e81 && u <= 0x000e82) ||
+            u == 0x000e84 ||
+            (u >= 0x000e86 && u <= 0x000e8a) ||
+            (u >= 0x000e8c && u <= 0x000ea3) ||
+            u == 0x000ea5 ||
+            (u >= 0x000ea7 && u <= 0x000eb0) ||
+            (u >= 0x000eb2 && u <= 0x000eb3) ||
+            u == 0x000ebd ||
+            (u >= 0x000ec0 && u <= 0x000ec4) ||
+            u == 0x000ec6 ||
+            (u >= 0x000edc && u <= 0x000edf) ||
+            u == 0x000f00 ||
+            (u >= 0x000f40 && u <= 0x000f47) ||
+            (u >= 0x000f49 && u <= 0x000f6c) ||
+            (u >= 0x000f88 && u <= 0x000f8c) ||
+            (u >= 0x001000 && u <= 0x00102a) ||
+            u == 0x00103f ||
+            (u >= 0x001050 && u <= 0x001055) ||
+            (u >= 0x00105a && u <= 0x00105d) ||
+            u == 0x001061 ||
+            (u >= 0x001065 && u <= 0x001066) ||
+            (u >= 0x00106e && u <= 0x001070) ||
+            (u >= 0x001075 && u <= 0x001081) ||
+            u == 0x00108e ||
+            (u >= 0x0010a0 && u <= 0x0010c5) ||
+            u == 0x0010c7 ||
+            u == 0x0010cd ||
+            (u >= 0x0010d0 && u <= 0x0010fa) ||
+            u == 0x0010fc ||
+            (u >= 0x0010fd && u <= 0x0010ff) ||
+            (u >= 0x001100 && u <= 0x001248) ||
+            (u >= 0x00124a && u <= 0x00124d) ||
+            (u >= 0x001250 && u <= 0x001256) ||
+            u == 0x001258 ||
+            (u >= 0x00125a && u <= 0x00125d) ||
+            (u >= 0x001260 && u <= 0x001288) ||
+            (u >= 0x00128a && u <= 0x00128d) ||
+            (u >= 0x001290 && u <= 0x0012b0) ||
+            (u >= 0x0012b2 && u <= 0x0012b5) ||
+            (u >= 0x0012b8 && u <= 0x0012be) ||
+            u == 0x0012c0 ||
+            (u >= 0x0012c2 && u <= 0x0012c5) ||
+            (u >= 0x0012c8 && u <= 0x0012d6) ||
+            (u >= 0x0012d8 && u <= 0x001310) ||
+            (u >= 0x001312 && u <= 0x001315) ||
+            (u >= 0x001318 && u <= 0x00135a) ||
+            (u >= 0x001380 && u <= 0x00138f) ||
+            (u >= 0x0013a0 && u <= 0x0013f5) ||
+            (u >= 0x0013f8 && u <= 0x0013fd) ||
+            (u >= 0x001401 && u <= 0x00166c) ||
+            (u >= 0x00166f && u <= 0x00167f) ||
+            (u >= 0x001681 && u <= 0x00169a) ||
+            (u >= 0x0016a0 && u <= 0x0016ea) ||
+            (u >= 0x0016ee && u <= 0x0016f0) ||
+            (u >= 0x0016f1 && u <= 0x0016f8) ||
+            (u >= 0x001700 && u <= 0x00170c) ||
+            (u >= 0x00170e && u <= 0x001711) ||
+            (u >= 0x001720 && u <= 0x001731) ||
+            (u >= 0x001740 && u <= 0x001751) ||
+            (u >= 0x001760 && u <= 0x00176c) ||
+            (u >= 0x00176e && u <= 0x001770) ||
+            (u >= 0x001780 && u <= 0x0017b3) ||
+            u == 0x0017d7 ||
+            u == 0x0017dc ||
+            (u >= 0x001820 && u <= 0x001842) ||
+            u == 0x001843 ||
+            (u >= 0x001844 && u <= 0x001878) ||
+            (u >= 0x001880 && u <= 0x001884) ||
+            (u >= 0x001887 && u <= 0x0018a8) ||
+            u == 0x0018aa ||
+            (u >= 0x0018b0 && u <= 0x0018f5) ||
+            (u >= 0x001900 && u <= 0x00191e) ||
+            (u >= 0x001950 && u <= 0x00196d) ||
+            (u >= 0x001970 && u <= 0x001974) ||
+            (u >= 0x001980 && u <= 0x0019ab) ||
+            (u >= 0x0019b0 && u <= 0x0019c9) ||
+            (u >= 0x001a00 && u <= 0x001a16) ||
+            (u >= 0x001a20 && u <= 0x001a54) ||
+            u == 0x001aa7 ||
+            (u >= 0x001b05 && u <= 0x001b33) ||
+            (u >= 0x001b45 && u <= 0x001b4b) ||
+            (u >= 0x001b83 && u <= 0x001ba0) ||
+            (u >= 0x001bae && u <= 0x001baf) ||
+            (u >= 0x001bba && u <= 0x001be5) ||
+            (u >= 0x001c00 && u <= 0x001c23) ||
+            (u >= 0x001c4d && u <= 0x001c4f) ||
+            (u >= 0x001c5a && u <= 0x001c77) ||
+            (u >= 0x001c78 && u <= 0x001c7d) ||
+            (u >= 0x001c80 && u <= 0x001c88) ||
+            (u >= 0x001c90 && u <= 0x001cba) ||
+            (u >= 0x001cbd && u <= 0x001cbf) ||
+            (u >= 0x001ce9 && u <= 0x001cec) ||
+            (u >= 0x001cee && u <= 0x001cf3) ||
+            (u >= 0x001cf5 && u <= 0x001cf6) ||
+            u == 0x001cfa ||
+            (u >= 0x001d00 && u <= 0x001d2b) ||
+            (u >= 0x001d2c && u <= 0x001d6a) ||
+            (u >= 0x001d6b && u <= 0x001d77) ||
+            u == 0x001d78 ||
+            (u >= 0x001d79 && u <= 0x001d9a) ||
+            (u >= 0x001d9b && u <= 0x001dbf) ||
+            u == 0x001e00 ||
+            u == 0x001e01 ||
+            u == 0x001e02 ||
+            u == 0x001e03 ||
+            u == 0x001e04 ||
+            u == 0x001e05 ||
+            u == 0x001e06 ||
+            u == 0x001e07 ||
+            u == 0x001e08 ||
+            u == 0x001e09 ||
+            u == 0x001e0a ||
+            u == 0x001e0b ||
+            u == 0x001e0c ||
+            u == 0x001e0d ||
+            u == 0x001e0e ||
+            u == 0x001e0f ||
+            u == 0x001e10 ||
+            u == 0x001e11 ||
+            u == 0x001e12 ||
+            u == 0x001e13 ||
+            u == 0x001e14 ||
+            u == 0x001e15 ||
+            u == 0x001e16 ||
+            u == 0x001e17 ||
+            u == 0x001e18 ||
+            u == 0x001e19 ||
+            u == 0x001e1a ||
+            u == 0x001e1b ||
+            u == 0x001e1c ||
+            u == 0x001e1d ||
+            u == 0x001e1e ||
+            u == 0x001e1f ||
+            u == 0x001e20 ||
+            u == 0x001e21 ||
+            u == 0x001e22 ||
+            u == 0x001e23 ||
+            u == 0x001e24 ||
+            u == 0x001e25 ||
+            u == 0x001e26 ||
+            u == 0x001e27 ||
+            u == 0x001e28 ||
+            u == 0x001e29 ||
+            u == 0x001e2a ||
+            u == 0x001e2b ||
+            u == 0x001e2c ||
+            u == 0x001e2d ||
+            u == 0x001e2e ||
+            u == 0x001e2f ||
+            u == 0x001e30 ||
+            u == 0x001e31 ||
+            u == 0x001e32 ||
+            u == 0x001e33 ||
+            u == 0x001e34 ||
+            u == 0x001e35 ||
+            u == 0x001e36 ||
+            u == 0x001e37 ||
+            u == 0x001e38 ||
+            u == 0x001e39 ||
+            u == 0x001e3a ||
+            u == 0x001e3b ||
+            u == 0x001e3c ||
+            u == 0x001e3d ||
+            u == 0x001e3e ||
+            u == 0x001e3f ||
+            u == 0x001e40 ||
+            u == 0x001e41 ||
+            u == 0x001e42 ||
+            u == 0x001e43 ||
+            u == 0x001e44 ||
+            u == 0x001e45 ||
+            u == 0x001e46 ||
+            u == 0x001e47 ||
+            u == 0x001e48 ||
+            u == 0x001e49 ||
+            u == 0x001e4a ||
+            u == 0x001e4b ||
+            u == 0x001e4c ||
+            u == 0x001e4d ||
+            u == 0x001e4e ||
+            u == 0x001e4f ||
+            u == 0x001e50 ||
+            u == 0x001e51 ||
+            u == 0x001e52 ||
+            u == 0x001e53 ||
+            u == 0x001e54 ||
+            u == 0x001e55 ||
+            u == 0x001e56 ||
+            u == 0x001e57 ||
+            u == 0x001e58 ||
+            u == 0x001e59 ||
+            u == 0x001e5a ||
+            u == 0x001e5b ||
+            u == 0x001e5c ||
+            u == 0x001e5d ||
+            u == 0x001e5e ||
+            u == 0x001e5f ||
+            u == 0x001e60 ||
+            u == 0x001e61 ||
+            u == 0x001e62 ||
+            u == 0x001e63 ||
+            u == 0x001e64 ||
+            u == 0x001e65 ||
+            u == 0x001e66 ||
+            u == 0x001e67 ||
+            u == 0x001e68 ||
+            u == 0x001e69 ||
+            u == 0x001e6a ||
+            u == 0x001e6b ||
+            u == 0x001e6c ||
+            u == 0x001e6d ||
+            u == 0x001e6e ||
+            u == 0x001e6f ||
+            u == 0x001e70 ||
+            u == 0x001e71 ||
+            u == 0x001e72 ||
+            u == 0x001e73 ||
+            u == 0x001e74 ||
+            u == 0x001e75 ||
+            u == 0x001e76 ||
+            u == 0x001e77 ||
+            u == 0x001e78 ||
+            u == 0x001e79 ||
+            u == 0x001e7a ||
+            u == 0x001e7b ||
+            u == 0x001e7c ||
+            u == 0x001e7d ||
+            u == 0x001e7e ||
+            u == 0x001e7f ||
+            u == 0x001e80 ||
+            u == 0x001e81 ||
+            u == 0x001e82 ||
+            u == 0x001e83 ||
+            u == 0x001e84 ||
+            u == 0x001e85 ||
+            u == 0x001e86 ||
+            u == 0x001e87 ||
+            u == 0x001e88 ||
+            u == 0x001e89 ||
+            u == 0x001e8a ||
+            u == 0x001e8b ||
+            u == 0x001e8c ||
+            u == 0x001e8d ||
+            u == 0x001e8e ||
+            u == 0x001e8f ||
+            u == 0x001e90 ||
+            u == 0x001e91 ||
+            u == 0x001e92 ||
+            u == 0x001e93 ||
+            u == 0x001e94 ||
+            (u >= 0x001e95 && u <= 0x001e9d) ||
+            u == 0x001e9e ||
+            u == 0x001e9f ||
+            u == 0x001ea0 ||
+            u == 0x001ea1 ||
+            u == 0x001ea2 ||
+            u == 0x001ea3 ||
+            u == 0x001ea4 ||
+            u == 0x001ea5 ||
+            u == 0x001ea6 ||
+            u == 0x001ea7 ||
+            u == 0x001ea8 ||
+            u == 0x001ea9 ||
+            u == 0x001eaa ||
+            u == 0x001eab ||
+            u == 0x001eac ||
+            u == 0x001ead ||
+            u == 0x001eae ||
+            u == 0x001eaf ||
+            u == 0x001eb0 ||
+            u == 0x001eb1 ||
+            u == 0x001eb2 ||
+            u == 0x001eb3 ||
+            u == 0x001eb4 ||
+            u == 0x001eb5 ||
+            u == 0x001eb6 ||
+            u == 0x001eb7 ||
+            u == 0x001eb8 ||
+            u == 0x001eb9 ||
+            u == 0x001eba ||
+            u == 0x001ebb ||
+            u == 0x001ebc ||
+            u == 0x001ebd ||
+            u == 0x001ebe ||
+            u == 0x001ebf ||
+            u == 0x001ec0 ||
+            u == 0x001ec1 ||
+            u == 0x001ec2 ||
+            u == 0x001ec3 ||
+            u == 0x001ec4 ||
+            u == 0x001ec5 ||
+            u == 0x001ec6 ||
+            u == 0x001ec7 ||
+            u == 0x001ec8 ||
+            u == 0x001ec9 ||
+            u == 0x001eca ||
+            u == 0x001ecb ||
+            u == 0x001ecc ||
+            u == 0x001ecd ||
+            u == 0x001ece ||
+            u == 0x001ecf ||
+            u == 0x001ed0 ||
+            u == 0x001ed1 ||
+            u == 0x001ed2 ||
+            u == 0x001ed3 ||
+            u == 0x001ed4 ||
+            u == 0x001ed5 ||
+            u == 0x001ed6 ||
+            u == 0x001ed7 ||
+            u == 0x001ed8 ||
+            u == 0x001ed9 ||
+            u == 0x001eda ||
+            u == 0x001edb ||
+            u == 0x001edc ||
+            u == 0x001edd ||
+            u == 0x001ede ||
+            u == 0x001edf ||
+            u == 0x001ee0 ||
+            u == 0x001ee1 ||
+            u == 0x001ee2 ||
+            u == 0x001ee3 ||
+            u == 0x001ee4 ||
+            u == 0x001ee5 ||
+            u == 0x001ee6 ||
+            u == 0x001ee7 ||
+            u == 0x001ee8 ||
+            u == 0x001ee9 ||
+            u == 0x001eea ||
+            u == 0x001eeb ||
+            u == 0x001eec ||
+            u == 0x001eed ||
+            u == 0x001eee ||
+            u == 0x001eef ||
+            u == 0x001ef0 ||
+            u == 0x001ef1 ||
+            u == 0x001ef2 ||
+            u == 0x001ef3 ||
+            u == 0x001ef4 ||
+            u == 0x001ef5 ||
+            u == 0x001ef6 ||
+            u == 0x001ef7 ||
+            u == 0x001ef8 ||
+            u == 0x001ef9 ||
+            u == 0x001efa ||
+            u == 0x001efb ||
+            u == 0x001efc ||
+            u == 0x001efd ||
+            u == 0x001efe ||
+            (u >= 0x001eff && u <= 0x001f07) ||
+            (u >= 0x001f08 && u <= 0x001f0f) ||
+            (u >= 0x001f10 && u <= 0x001f15) ||
+            (u >= 0x001f18 && u <= 0x001f1d) ||
+            (u >= 0x001f20 && u <= 0x001f27) ||
+            (u >= 0x001f28 && u <= 0x001f2f) ||
+            (u >= 0x001f30 && u <= 0x001f37) ||
+            (u >= 0x001f38 && u <= 0x001f3f) ||
+            (u >= 0x001f40 && u <= 0x001f45) ||
+            (u >= 0x001f48 && u <= 0x001f4d) ||
+            (u >= 0x001f50 && u <= 0x001f57) ||
+            u == 0x001f59 ||
+            u == 0x001f5b ||
+            u == 0x001f5d ||
+            u == 0x001f5f ||
+            (u >= 0x001f60 && u <= 0x001f67) ||
+            (u >= 0x001f68 && u <= 0x001f6f) ||
+            (u >= 0x001f70 && u <= 0x001f7d) ||
+            (u >= 0x001f80 && u <= 0x001f87) ||
+            (u >= 0x001f88 && u <= 0x001f8f) ||
+            (u >= 0x001f90 && u <= 0x001f97) ||
+            (u >= 0x001f98 && u <= 0x001f9f) ||
+            (u >= 0x001fa0 && u <= 0x001fa7) ||
+            (u >= 0x001fa8 && u <= 0x001faf) ||
+            (u >= 0x001fb0 && u <= 0x001fb4) ||
+            (u >= 0x001fb6 && u <= 0x001fb7) ||
+            (u >= 0x001fb8 && u <= 0x001fbb) ||
+            u == 0x001fbc ||
+            u == 0x001fbe ||
+            (u >= 0x001fc2 && u <= 0x001fc4) ||
+            (u >= 0x001fc6 && u <= 0x001fc7) ||
+            (u >= 0x001fc8 && u <= 0x001fcb) ||
+            u == 0x001fcc ||
+            (u >= 0x001fd0 && u <= 0x001fd3) ||
+            (u >= 0x001fd6 && u <= 0x001fd7) ||
+            (u >= 0x001fd8 && u <= 0x001fdb) ||
+            (u >= 0x001fe0 && u <= 0x001fe7) ||
+            (u >= 0x001fe8 && u <= 0x001fec) ||
+            (u >= 0x001ff2 && u <= 0x001ff4) ||
+            (u >= 0x001ff6 && u <= 0x001ff7) ||
+            (u >= 0x001ff8 && u <= 0x001ffb) ||
+            u == 0x001ffc ||
+            u == 0x002071 ||
+            u == 0x00207f ||
+            (u >= 0x002090 && u <= 0x00209c) ||
+            u == 0x002102 ||
+            u == 0x002107 ||
+            u == 0x00210a ||
+            (u >= 0x00210b && u <= 0x00210d) ||
+            (u >= 0x00210e && u <= 0x00210f) ||
+            (u >= 0x002110 && u <= 0x002112) ||
+            u == 0x002113 ||
+            u == 0x002115 ||
+            (u >= 0x002119 && u <= 0x00211d) ||
+            u == 0x002124 ||
+            u == 0x002126 ||
+            u == 0x002128 ||
+            (u >= 0x00212a && u <= 0x00212d) ||
+            u == 0x00212f ||
+            (u >= 0x002130 && u <= 0x002133) ||
+            u == 0x002134 ||
+            (u >= 0x002135 && u <= 0x002138) ||
+            u == 0x002139 ||
+            (u >= 0x00213c && u <= 0x00213d) ||
+            (u >= 0x00213e && u <= 0x00213f) ||
+            u == 0x002145 ||
+            (u >= 0x002146 && u <= 0x002149) ||
+            u == 0x00214e ||
+            (u >= 0x002160 && u <= 0x002182) ||
+            u == 0x002183 ||
+            u == 0x002184 ||
+            (u >= 0x002185 && u <= 0x002188) ||
+            (u >= 0x002c00 && u <= 0x002c2e) ||
+            (u >= 0x002c30 && u <= 0x002c5e) ||
+            u == 0x002c60 ||
+            u == 0x002c61 ||
+            (u >= 0x002c62 && u <= 0x002c64) ||
+            (u >= 0x002c65 && u <= 0x002c66) ||
+            u == 0x002c67 ||
+            u == 0x002c68 ||
+            u == 0x002c69 ||
+            u == 0x002c6a ||
+            u == 0x002c6b ||
+            u == 0x002c6c ||
+            (u >= 0x002c6d && u <= 0x002c70) ||
+            u == 0x002c71 ||
+            u == 0x002c72 ||
+            (u >= 0x002c73 && u <= 0x002c74) ||
+            u == 0x002c75 ||
+            (u >= 0x002c76 && u <= 0x002c7b) ||
+            (u >= 0x002c7c && u <= 0x002c7d) ||
+            (u >= 0x002c7e && u <= 0x002c80) ||
+            u == 0x002c81 ||
+            u == 0x002c82 ||
+            u == 0x002c83 ||
+            u == 0x002c84 ||
+            u == 0x002c85 ||
+            u == 0x002c86 ||
+            u == 0x002c87 ||
+            u == 0x002c88 ||
+            u == 0x002c89 ||
+            u == 0x002c8a ||
+            u == 0x002c8b ||
+            u == 0x002c8c ||
+            u == 0x002c8d ||
+            u == 0x002c8e ||
+            u == 0x002c8f ||
+            u == 0x002c90 ||
+            u == 0x002c91 ||
+            u == 0x002c92 ||
+            u == 0x002c93 ||
+            u == 0x002c94 ||
+            u == 0x002c95 ||
+            u == 0x002c96 ||
+            u == 0x002c97 ||
+            u == 0x002c98 ||
+            u == 0x002c99 ||
+            u == 0x002c9a ||
+            u == 0x002c9b ||
+            u == 0x002c9c ||
+            u == 0x002c9d ||
+            u == 0x002c9e ||
+            u == 0x002c9f ||
+            u == 0x002ca0 ||
+            u == 0x002ca1 ||
+            u == 0x002ca2 ||
+            u == 0x002ca3 ||
+            u == 0x002ca4 ||
+            u == 0x002ca5 ||
+            u == 0x002ca6 ||
+            u == 0x002ca7 ||
+            u == 0x002ca8 ||
+            u == 0x002ca9 ||
+            u == 0x002caa ||
+            u == 0x002cab ||
+            u == 0x002cac ||
+            u == 0x002cad ||
+            u == 0x002cae ||
+            u == 0x002caf ||
+            u == 0x002cb0 ||
+            u == 0x002cb1 ||
+            u == 0x002cb2 ||
+            u == 0x002cb3 ||
+            u == 0x002cb4 ||
+            u == 0x002cb5 ||
+            u == 0x002cb6 ||
+            u == 0x002cb7 ||
+            u == 0x002cb8 ||
+            u == 0x002cb9 ||
+            u == 0x002cba ||
+            u == 0x002cbb ||
+            u == 0x002cbc ||
+            u == 0x002cbd ||
+            u == 0x002cbe ||
+            u == 0x002cbf ||
+            u == 0x002cc0 ||
+            u == 0x002cc1 ||
+            u == 0x002cc2 ||
+            u == 0x002cc3 ||
+            u == 0x002cc4 ||
+            u == 0x002cc5 ||
+            u == 0x002cc6 ||
+            u == 0x002cc7 ||
+            u == 0x002cc8 ||
+            u == 0x002cc9 ||
+            u == 0x002cca ||
+            u == 0x002ccb ||
+            u == 0x002ccc ||
+            u == 0x002ccd ||
+            u == 0x002cce ||
+            u == 0x002ccf ||
+            u == 0x002cd0 ||
+            u == 0x002cd1 ||
+            u == 0x002cd2 ||
+            u == 0x002cd3 ||
+            u == 0x002cd4 ||
+            u == 0x002cd5 ||
+            u == 0x002cd6 ||
+            u == 0x002cd7 ||
+            u == 0x002cd8 ||
+            u == 0x002cd9 ||
+            u == 0x002cda ||
+            u == 0x002cdb ||
+            u == 0x002cdc ||
+            u == 0x002cdd ||
+            u == 0x002cde ||
+            u == 0x002cdf ||
+            u == 0x002ce0 ||
+            u == 0x002ce1 ||
+            u == 0x002ce2 ||
+            (u >= 0x002ce3 && u <= 0x002ce4) ||
+            u == 0x002ceb ||
+            u == 0x002cec ||
+            u == 0x002ced ||
+            u == 0x002cee ||
+            u == 0x002cf2 ||
+            u == 0x002cf3 ||
+            (u >= 0x002d00 && u <= 0x002d25) ||
+            u == 0x002d27 ||
+            u == 0x002d2d ||
+            (u >= 0x002d30 && u <= 0x002d67) ||
+            u == 0x002d6f ||
+            (u >= 0x002d80 && u <= 0x002d96) ||
+            (u >= 0x002da0 && u <= 0x002da6) ||
+            (u >= 0x002da8 && u <= 0x002dae) ||
+            (u >= 0x002db0 && u <= 0x002db6) ||
+            (u >= 0x002db8 && u <= 0x002dbe) ||
+            (u >= 0x002dc0 && u <= 0x002dc6) ||
+            (u >= 0x002dc8 && u <= 0x002dce) ||
+            (u >= 0x002dd0 && u <= 0x002dd6) ||
+            (u >= 0x002dd8 && u <= 0x002dde) ||
+            u == 0x002e2f ||
+            u == 0x003005 ||
+            u == 0x003006 ||
+            u == 0x003007 ||
+            (u >= 0x003021 && u <= 0x003029) ||
+            (u >= 0x003031 && u <= 0x003035) ||
+            (u >= 0x003038 && u <= 0x00303a) ||
+            u == 0x00303b ||
+            u == 0x00303c ||
+            (u >= 0x003041 && u <= 0x003096) ||
+            (u >= 0x00309d && u <= 0x00309e) ||
+            u == 0x00309f ||
+            (u >= 0x0030a1 && u <= 0x0030fa) ||
+            (u >= 0x0030fc && u <= 0x0030fe) ||
+            u == 0x0030ff ||
+            (u >= 0x003105 && u <= 0x00312f) ||
+            (u >= 0x003131 && u <= 0x00318e) ||
+            (u >= 0x0031a0 && u <= 0x0031bf) ||
+            (u >= 0x0031f0 && u <= 0x0031ff) ||
+            (u >= 0x003400 && u <= 0x004dbf) ||
+            (u >= 0x004e00 && u <= 0x009ffc) ||
+            (u >= 0x00a000 && u <= 0x00a014) ||
+            u == 0x00a015 ||
+            (u >= 0x00a016 && u <= 0x00a48c) ||
+            (u >= 0x00a4d0 && u <= 0x00a4f7) ||
+            (u >= 0x00a4f8 && u <= 0x00a4fd) ||
+            (u >= 0x00a500 && u <= 0x00a60b) ||
+            u == 0x00a60c ||
+            (u >= 0x00a610 && u <= 0x00a61f) ||
+            (u >= 0x00a62a && u <= 0x00a62b) ||
+            u == 0x00a640 ||
+            u == 0x00a641 ||
+            u == 0x00a642 ||
+            u == 0x00a643 ||
+            u == 0x00a644 ||
+            u == 0x00a645 ||
+            u == 0x00a646 ||
+            u == 0x00a647 ||
+            u == 0x00a648 ||
+            u == 0x00a649 ||
+            u == 0x00a64a ||
+            u == 0x00a64b ||
+            u == 0x00a64c ||
+            u == 0x00a64d ||
+            u == 0x00a64e ||
+            u == 0x00a64f ||
+            u == 0x00a650 ||
+            u == 0x00a651 ||
+            u == 0x00a652 ||
+            u == 0x00a653 ||
+            u == 0x00a654 ||
+            u == 0x00a655 ||
+            u == 0x00a656 ||
+            u == 0x00a657 ||
+            u == 0x00a658 ||
+            u == 0x00a659 ||
+            u == 0x00a65a ||
+            u == 0x00a65b ||
+            u == 0x00a65c ||
+            u == 0x00a65d ||
+            u == 0x00a65e ||
+            u == 0x00a65f ||
+            u == 0x00a660 ||
+            u == 0x00a661 ||
+            u == 0x00a662 ||
+            u == 0x00a663 ||
+            u == 0x00a664 ||
+            u == 0x00a665 ||
+            u == 0x00a666 ||
+            u == 0x00a667 ||
+            u == 0x00a668 ||
+            u == 0x00a669 ||
+            u == 0x00a66a ||
+            u == 0x00a66b ||
+            u == 0x00a66c ||
+            u == 0x00a66d ||
+            u == 0x00a66e ||
+            u == 0x00a67f ||
+            u == 0x00a680 ||
+            u == 0x00a681 ||
+            u == 0x00a682 ||
+            u == 0x00a683 ||
+            u == 0x00a684 ||
+            u == 0x00a685 ||
+            u == 0x00a686 ||
+            u == 0x00a687 ||
+            u == 0x00a688 ||
+            u == 0x00a689 ||
+            u == 0x00a68a ||
+            u == 0x00a68b ||
+            u == 0x00a68c ||
+            u == 0x00a68d ||
+            u == 0x00a68e ||
+            u == 0x00a68f ||
+            u == 0x00a690 ||
+            u == 0x00a691 ||
+            u == 0x00a692 ||
+            u == 0x00a693 ||
+            u == 0x00a694 ||
+            u == 0x00a695 ||
+            u == 0x00a696 ||
+            u == 0x00a697 ||
+            u == 0x00a698 ||
+            u == 0x00a699 ||
+            u == 0x00a69a ||
+            u == 0x00a69b ||
+            (u >= 0x00a69c && u <= 0x00a69d) ||
+            (u >= 0x00a6a0 && u <= 0x00a6e5) ||
+            (u >= 0x00a6e6 && u <= 0x00a6ef) ||
+            (u >= 0x00a717 && u <= 0x00a71f) ||
+            u == 0x00a722 ||
+            u == 0x00a723 ||
+            u == 0x00a724 ||
+            u == 0x00a725 ||
+            u == 0x00a726 ||
+            u == 0x00a727 ||
+            u == 0x00a728 ||
+            u == 0x00a729 ||
+            u == 0x00a72a ||
+            u == 0x00a72b ||
+            u == 0x00a72c ||
+            u == 0x00a72d ||
+            u == 0x00a72e ||
+            (u >= 0x00a72f && u <= 0x00a731) ||
+            u == 0x00a732 ||
+            u == 0x00a733 ||
+            u == 0x00a734 ||
+            u == 0x00a735 ||
+            u == 0x00a736 ||
+            u == 0x00a737 ||
+            u == 0x00a738 ||
+            u == 0x00a739 ||
+            u == 0x00a73a ||
+            u == 0x00a73b ||
+            u == 0x00a73c ||
+            u == 0x00a73d ||
+            u == 0x00a73e ||
+            u == 0x00a73f ||
+            u == 0x00a740 ||
+            u == 0x00a741 ||
+            u == 0x00a742 ||
+            u == 0x00a743 ||
+            u == 0x00a744 ||
+            u == 0x00a745 ||
+            u == 0x00a746 ||
+            u == 0x00a747 ||
+            u == 0x00a748 ||
+            u == 0x00a749 ||
+            u == 0x00a74a ||
+            u == 0x00a74b ||
+            u == 0x00a74c ||
+            u == 0x00a74d ||
+            u == 0x00a74e ||
+            u == 0x00a74f ||
+            u == 0x00a750 ||
+            u == 0x00a751 ||
+            u == 0x00a752 ||
+            u == 0x00a753 ||
+            u == 0x00a754 ||
+            u == 0x00a755 ||
+            u == 0x00a756 ||
+            u == 0x00a757 ||
+            u == 0x00a758 ||
+            u == 0x00a759 ||
+            u == 0x00a75a ||
+            u == 0x00a75b ||
+            u == 0x00a75c ||
+            u == 0x00a75d ||
+            u == 0x00a75e ||
+            u == 0x00a75f ||
+            u == 0x00a760 ||
+            u == 0x00a761 ||
+            u == 0x00a762 ||
+            u == 0x00a763 ||
+            u == 0x00a764 ||
+            u == 0x00a765 ||
+            u == 0x00a766 ||
+            u == 0x00a767 ||
+            u == 0x00a768 ||
+            u == 0x00a769 ||
+            u == 0x00a76a ||
+            u == 0x00a76b ||
+            u == 0x00a76c ||
+            u == 0x00a76d ||
+            u == 0x00a76e ||
+            u == 0x00a76f ||
+            u == 0x00a770 ||
+            (u >= 0x00a771 && u <= 0x00a778) ||
+            u == 0x00a779 ||
+            u == 0x00a77a ||
+            u == 0x00a77b ||
+            u == 0x00a77c ||
+            (u >= 0x00a77d && u <= 0x00a77e) ||
+            u == 0x00a77f ||
+            u == 0x00a780 ||
+            u == 0x00a781 ||
+            u == 0x00a782 ||
+            u == 0x00a783 ||
+            u == 0x00a784 ||
+            u == 0x00a785 ||
+            u == 0x00a786 ||
+            u == 0x00a787 ||
+            u == 0x00a788 ||
+            u == 0x00a78b ||
+            u == 0x00a78c ||
+            u == 0x00a78d ||
+            u == 0x00a78e ||
+            u == 0x00a78f ||
+            u == 0x00a790 ||
+            u == 0x00a791 ||
+            u == 0x00a792 ||
+            (u >= 0x00a793 && u <= 0x00a795) ||
+            u == 0x00a796 ||
+            u == 0x00a797 ||
+            u == 0x00a798 ||
+            u == 0x00a799 ||
+            u == 0x00a79a ||
+            u == 0x00a79b ||
+            u == 0x00a79c ||
+            u == 0x00a79d ||
+            u == 0x00a79e ||
+            u == 0x00a79f ||
+            u == 0x00a7a0 ||
+            u == 0x00a7a1 ||
+            u == 0x00a7a2 ||
+            u == 0x00a7a3 ||
+            u == 0x00a7a4 ||
+            u == 0x00a7a5 ||
+            u == 0x00a7a6 ||
+            u == 0x00a7a7 ||
+            u == 0x00a7a8 ||
+            u == 0x00a7a9 ||
+            (u >= 0x00a7aa && u <= 0x00a7ae) ||
+            u == 0x00a7af ||
+            (u >= 0x00a7b0 && u <= 0x00a7b4) ||
+            u == 0x00a7b5 ||
+            u == 0x00a7b6 ||
+            u == 0x00a7b7 ||
+            u == 0x00a7b8 ||
+            u == 0x00a7b9 ||
+            u == 0x00a7ba ||
+            u == 0x00a7bb ||
+            u == 0x00a7bc ||
+            u == 0x00a7bd ||
+            u == 0x00a7be ||
+            u == 0x00a7bf ||
+            u == 0x00a7c2 ||
+            u == 0x00a7c3 ||
+            (u >= 0x00a7c4 && u <= 0x00a7c7) ||
+            u == 0x00a7c8 ||
+            u == 0x00a7c9 ||
+            u == 0x00a7ca ||
+            u == 0x00a7f5 ||
+            u == 0x00a7f6 ||
+            u == 0x00a7f7 ||
+            (u >= 0x00a7f8 && u <= 0x00a7f9) ||
+            u == 0x00a7fa ||
+            (u >= 0x00a7fb && u <= 0x00a801) ||
+            (u >= 0x00a803 && u <= 0x00a805) ||
+            (u >= 0x00a807 && u <= 0x00a80a) ||
+            (u >= 0x00a80c && u <= 0x00a822) ||
+            (u >= 0x00a840 && u <= 0x00a873) ||
+            (u >= 0x00a882 && u <= 0x00a8b3) ||
+            (u >= 0x00a8f2 && u <= 0x00a8f7) ||
+            u == 0x00a8fb ||
+            (u >= 0x00a8fd && u <= 0x00a8fe) ||
+            (u >= 0x00a90a && u <= 0x00a925) ||
+            (u >= 0x00a930 && u <= 0x00a946) ||
+            (u >= 0x00a960 && u <= 0x00a97c) ||
+            (u >= 0x00a984 && u <= 0x00a9b2) ||
+            u == 0x00a9cf ||
+            (u >= 0x00a9e0 && u <= 0x00a9e4) ||
+            u == 0x00a9e6 ||
+            (u >= 0x00a9e7 && u <= 0x00a9ef) ||
+            (u >= 0x00a9fa && u <= 0x00a9fe) ||
+            (u >= 0x00aa00 && u <= 0x00aa28) ||
+            (u >= 0x00aa40 && u <= 0x00aa42) ||
+            (u >= 0x00aa44 && u <= 0x00aa4b) ||
+            (u >= 0x00aa60 && u <= 0x00aa6f) ||
+            u == 0x00aa70 ||
+            (u >= 0x00aa71 && u <= 0x00aa76) ||
+            u == 0x00aa7a ||
+            (u >= 0x00aa7e && u <= 0x00aaaf) ||
+            u == 0x00aab1 ||
+            (u >= 0x00aab5 && u <= 0x00aab6) ||
+            (u >= 0x00aab9 && u <= 0x00aabd) ||
+            u == 0x00aac0 ||
+            u == 0x00aac2 ||
+            (u >= 0x00aadb && u <= 0x00aadc) ||
+            u == 0x00aadd ||
+            (u >= 0x00aae0 && u <= 0x00aaea) ||
+            u == 0x00aaf2 ||
+            (u >= 0x00aaf3 && u <= 0x00aaf4) ||
+            (u >= 0x00ab01 && u <= 0x00ab06) ||
+            (u >= 0x00ab09 && u <= 0x00ab0e) ||
+            (u >= 0x00ab11 && u <= 0x00ab16) ||
+            (u >= 0x00ab20 && u <= 0x00ab26) ||
+            (u >= 0x00ab28 && u <= 0x00ab2e) ||
+            (u >= 0x00ab30 && u <= 0x00ab5a) ||
+            (u >= 0x00ab5c && u <= 0x00ab5f) ||
+            (u >= 0x00ab60 && u <= 0x00ab68) ||
+            u == 0x00ab69 ||
+            (u >= 0x00ab70 && u <= 0x00abbf) ||
+            (u >= 0x00abc0 && u <= 0x00abe2) ||
+            (u >= 0x00ac00 && u <= 0x00d7a3) ||
+            (u >= 0x00d7b0 && u <= 0x00d7c6) ||
+            (u >= 0x00d7cb && u <= 0x00d7fb) ||
+            (u >= 0x00f900 && u <= 0x00fa6d) ||
+            (u >= 0x00fa70 && u <= 0x00fad9) ||
+            (u >= 0x00fb00 && u <= 0x00fb06) ||
+            (u >= 0x00fb13 && u <= 0x00fb17) ||
+            u == 0x00fb1d ||
+            (u >= 0x00fb1f && u <= 0x00fb28) ||
+            (u >= 0x00fb2a && u <= 0x00fb36) ||
+            (u >= 0x00fb38 && u <= 0x00fb3c) ||
+            u == 0x00fb3e ||
+            (u >= 0x00fb40 && u <= 0x00fb41) ||
+            (u >= 0x00fb43 && u <= 0x00fb44) ||
+            (u >= 0x00fb46 && u <= 0x00fbb1) ||
+            (u >= 0x00fbd3 && u <= 0x00fd3d) ||
+            (u >= 0x00fd50 && u <= 0x00fd8f) ||
+            (u >= 0x00fd92 && u <= 0x00fdc7) ||
+            (u >= 0x00fdf0 && u <= 0x00fdfb) ||
+            (u >= 0x00fe70 && u <= 0x00fe74) ||
+            (u >= 0x00fe76 && u <= 0x00fefc) ||
+            (u >= 0x00ff21 && u <= 0x00ff3a) ||
+            (u >= 0x00ff41 && u <= 0x00ff5a) ||
+            (u >= 0x00ff66 && u <= 0x00ff6f) ||
+            u == 0x00ff70 ||
+            (u >= 0x00ff71 && u <= 0x00ff9d) ||
+            (u >= 0x00ff9e && u <= 0x00ff9f) ||
+            (u >= 0x00ffa0 && u <= 0x00ffbe) ||
+            (u >= 0x00ffc2 && u <= 0x00ffc7) ||
+            (u >= 0x00ffca && u <= 0x00ffcf) ||
+            (u >= 0x00ffd2 && u <= 0x00ffd7) ||
+            (u >= 0x00ffda && u <= 0x00ffdc)
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "UNICODE_LETTER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "UNICODE_LETTER", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    pcc_thunk_chunk__destroy(ctx->auxil, chunk);
+    return NULL;
+}
+
+static pcc_thunk_chunk_t *pcc_evaluate_rule_UNICODE_DIGIT(cactus_context_t *ctx) {
+    pcc_thunk_chunk_t *const chunk = pcc_thunk_chunk__create(ctx->auxil);
+    chunk->pos = ctx->cur;
+    PCC_DEBUG(PCC_DBG_EVALUATE, "UNICODE_DIGIT", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->buffer.len - chunk->pos));
+    ctx->level++;
+    pcc_value_table__resize(ctx->auxil, &chunk->values, 0);
+    pcc_capture_table__resize(ctx->auxil, &chunk->capts, 0);
+    {
+        int u;
+        const size_t n = pcc_get_char_as_utf32(ctx, &u);
+        if (n == 0) goto L0000;
+        if (!(
+            (u >= 0x000030 && u <= 0x000039) ||
+            (u >= 0x000660 && u <= 0x000669) ||
+            (u >= 0x0006f0 && u <= 0x0006f9) ||
+            (u >= 0x0007c0 && u <= 0x0007c9) ||
+            (u >= 0x000966 && u <= 0x00096f) ||
+            (u >= 0x0009e6 && u <= 0x0009ef) ||
+            (u >= 0x000a66 && u <= 0x000a6f) ||
+            (u >= 0x000ae6 && u <= 0x000aef) ||
+            (u >= 0x000b66 && u <= 0x000b6f) ||
+            (u >= 0x000be6 && u <= 0x000bef) ||
+            (u >= 0x000c66 && u <= 0x000c6f) ||
+            (u >= 0x000ce6 && u <= 0x000cef) ||
+            (u >= 0x000d66 && u <= 0x000d6f) ||
+            (u >= 0x000de6 && u <= 0x000def) ||
+            (u >= 0x000e50 && u <= 0x000e59) ||
+            (u >= 0x000ed0 && u <= 0x000ed9) ||
+            (u >= 0x000f20 && u <= 0x000f29) ||
+            (u >= 0x001040 && u <= 0x001049) ||
+            (u >= 0x001090 && u <= 0x001099) ||
+            (u >= 0x0017e0 && u <= 0x0017e9) ||
+            (u >= 0x001810 && u <= 0x001819) ||
+            (u >= 0x001946 && u <= 0x00194f) ||
+            (u >= 0x0019d0 && u <= 0x0019d9) ||
+            (u >= 0x001a80 && u <= 0x001a89) ||
+            (u >= 0x001a90 && u <= 0x001a99) ||
+            (u >= 0x001b50 && u <= 0x001b59) ||
+            (u >= 0x001bb0 && u <= 0x001bb9) ||
+            (u >= 0x001c40 && u <= 0x001c49) ||
+            (u >= 0x001c50 && u <= 0x001c59) ||
+            (u >= 0x00a620 && u <= 0x00a629) ||
+            (u >= 0x00a8d0 && u <= 0x00a8d9) ||
+            (u >= 0x00a900 && u <= 0x00a909) ||
+            (u >= 0x00a9d0 && u <= 0x00a9d9) ||
+            (u >= 0x00a9f0 && u <= 0x00a9f9) ||
+            (u >= 0x00aa50 && u <= 0x00aa59) ||
+            (u >= 0x00abf0 && u <= 0x00abf9) ||
+            (u >= 0x00ff10 && u <= 0x00ff19)
+        )) goto L0000;
+        ctx->cur += n;
+    }
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_MATCH, "UNICODE_DIGIT", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
+    return chunk;
+L0000:;
+    ctx->level--;
+    PCC_DEBUG(PCC_DBG_NOMATCH, "UNICODE_DIGIT", ctx->level, chunk->pos, (ctx->buffer.buf + chunk->pos), (ctx->cur - chunk->pos));
     pcc_thunk_chunk__destroy(ctx->auxil, chunk);
     return NULL;
 }
