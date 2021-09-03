@@ -25,7 +25,7 @@ LastStatement <-
     Expression
 
 StatementSep <-
-    _ (SEMI / LineComment? NEWLINE / BlockMultilineComment) _
+    _ (SEMI / LINE_COMMENT? NEWLINE / BLOCK_MULTILINE_COMMENT) _
 
 LetStatement <-
     LET WORD_BOUNDARY _ IDENTIFIER _ ASSIGN _ Expression
@@ -114,27 +114,27 @@ EscapedCharacter <-
     't' /
     'v'
 
-# Skipped
+# Spacing
 
 _ <-
-    (WhiteSpace / BlockInlineComment)*
+    (WHITESPACE / BLOCK_INLINE_COMMENT)*
 
 __ <-
-    (WhiteSpace / NEWLINE / BlockComment / LineComment)*
+    (WHITESPACE / NEWLINE / BLOCK_COMMENT / LINE_COMMENT)*
 
-WhiteSpace <-
+WHITESPACE <-
     [ \t\u000C]+
 
-BlockComment <-
+BLOCK_COMMENT <-
     '/*' (!'*/' .)* '*/'
 
-BlockInlineComment <-
+BLOCK_INLINE_COMMENT <-
     '/*' (!('*/' / NEWLINE) .)* '*/'
 
-BlockMultilineComment <-
+BLOCK_MULTILINE_COMMENT <-
     '/*' (!('*/' / NEWLINE) .)* NEWLINE (!'*/' .)* '*/'
 
-LineComment <-
+LINE_COMMENT <-
     '//' (!NEWLINE .)*
 
 # Reserved Words
