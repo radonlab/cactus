@@ -3,6 +3,7 @@
   "type": "application",
   "value": {
     "author": "Skyler Lee",
-    "description": "Cactus programming language"
+    "description": "Cactus programming language",
+    "use": ["cpputest"]
   }
 }
