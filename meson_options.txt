@@ -1,0 +1,2 @@
+option('tests', type: 'feature', value: 'enabled', yield: true,
+  description: 'Enable or disable unit tests')

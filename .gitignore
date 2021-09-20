@@ -1,4 +1,5 @@
 .bake_cache
+.clarcache
 .DS_Store
 .vscode
 gcov

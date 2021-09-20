@@ -5,10 +5,14 @@ project('cactus', 'c',
 
 inc_dir = include_directories('include')
 
-srcs = ['src/parser/grammar.c', 'src/main.c']
+srcs = files('src/parser/grammar.c', 'src/main.c')
 
 executable('cactus',
   srcs,
   include_directories: [inc_dir],
   install: true
 )
+
+if not get_option('tests').disabled()
+  subdir('tests')
+endif
