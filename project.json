@@ -1,9 +1,0 @@
-{
-  "id": "cactus",
-  "type": "application",
-  "value": {
-    "author": "Skyler Lee",
-    "description": "Cactus programming language",
-    "use": ["cpputest"]
-  }
-}

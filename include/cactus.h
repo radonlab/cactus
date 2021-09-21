@@ -1,15 +1,4 @@
-#ifndef CACTUS_H
-#define CACTUS_H
+#ifndef CACTUS_H_
+#define CACTUS_H_
 
-/* This generated file contains includes for project dependencies */
-#include "cactus/bake_config.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+#endif  // CACTUS_H_
