@@ -1,6 +1,6 @@
-#ifndef TESTS_TESTS_H_
-#define TESTS_TESTS_H_
+#ifndef TESTS_H_
+#define TESTS_H_
 
 #include "clar.h"
 
-#endif  // TESTS_TESTS_H_
+#endif  // TESTS_H_

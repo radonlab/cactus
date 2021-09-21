@@ -4,8 +4,8 @@
  * This file is part of clar, distributed under the ISC license.
  * For full terms see the included COPYING file.
  */
-#ifndef __CLAR_TEST_H__
-#define __CLAR_TEST_H__
+#ifndef CLAR_H_
+#define CLAR_H_
 
 #include <stdlib.h>
 
@@ -199,4 +199,4 @@ void clar__assert_equal(const char* file, const char* func, size_t line,
                         const char* err, int should_abort, const char* fmt,
                         ...);
 
-#endif
+#endif  // CLAR_H_

@@ -1,7 +1,6 @@
-#include "cactus/cactus.h"
-
 #include <stdio.h>
 
+#include "cactus/cactus.h"
 #include "parser/grammar.h"
 
 int main(int argc, char* argv[]) {
