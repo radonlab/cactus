@@ -1,0 +1,3 @@
+Checks: "-*,google-*,readability-*,misc-*"
+HeaderFilterRegex: "(include|src)/.*\\.h$"
+CheckOptions: []
