@@ -28,7 +28,7 @@ StatementSep <-
     _ (SEMI / LINE_COMMENT? NEWLINE / BLOCK_MULTILINE_COMMENT) _
 
 LetStatement <-
-    LET WORD_BOUNDARY _ IDENTIFIER _ ASSIGN _ Expression
+    LET _ IDENTIFIER _ ASSIGN _ Expression
 
 # Expressions
 
@@ -37,7 +37,7 @@ Expression <-
     IfExpression
 
 IfExpression <-
-    IF WORD_BOUNDARY _ Expression _ Block _ (ELSE WORD_BOUNDARY _ (Block / IfExpression))?
+    IF _ Expression _ Block _ (ELSE _ (Block / IfExpression))?
 
 # Literals
 Literal <-
@@ -139,12 +139,12 @@ LINE_COMMENT <-
 
 # Reserved Words
 
-ELSE   <- 'else'
-FALSE  <- 'false'
-IF     <- 'if'
-IMPORT <- 'import'
-LET    <- 'let'
-TRUE   <- 'true'
+ELSE   <- 'else' WORD_BOUNDARY
+FALSE  <- 'false' WORD_BOUNDARY
+IF     <- 'if' WORD_BOUNDARY
+IMPORT <- 'import' WORD_BOUNDARY
+LET    <- 'let' WORD_BOUNDARY
+TRUE   <- 'true' WORD_BOUNDARY
 
 # Lexical Rules
 
