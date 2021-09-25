@@ -51,14 +51,14 @@ BooleanLiteral <-
     FALSE / TRUE
 
 FloatLiteral <-
-    DecimalFloatLiteral /
-    HexFloatLiteral
+    DecimalFloatLiteral WORD_BOUNDARY /
+    HexFloatLiteral WORD_BOUNDARY
 
 IntegerLiteral <-
-    DecimalIntegerLiteral /
-    BinaryIntegerLiteral /
-    OctalIntegerLiteral /
-    HexIntegerLiteral
+    DecimalIntegerLiteral WORD_BOUNDARY /
+    HexIntegerLiteral WORD_BOUNDARY /
+    BinaryIntegerLiteral WORD_BOUNDARY /
+    OctalIntegerLiteral WORD_BOUNDARY
 
 RuneLiteral <-
     '\'' ((!('\'' / '\\' / NEWLINE) .) / ('\\' EscapedCharacter)) '\''
