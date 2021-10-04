@@ -21,10 +21,8 @@ typedef struct cactus_file_ostream_t {
   FILE* file;
 } cactus_file_ostream_t;
 
-cactus_istream_t* cactus_file_istream_init(cactus_file_istream_t* stream,
-                                           FILE* file);
+cactus_istream_t* cactus_file_istream_init(cactus_file_istream_t* stream, FILE* file);
 
-cactus_ostream_t* cactus_file_ostream_init(cactus_file_ostream_t* stream,
-                                           FILE* file);
+cactus_ostream_t* cactus_file_ostream_init(cactus_file_ostream_t* stream, FILE* file);
 
 #endif  // CACTUS_UTILS_FILE_STREAM_H_

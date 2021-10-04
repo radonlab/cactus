@@ -1,4 +1,5 @@
 BasedOnStyle: Google
+ColumnLimit: 120
+MaxEmptyLinesToKeep: 1
 DerivePointerAlignment: false
 PointerAlignment: Left
-MaxEmptyLinesToKeep: 1
