@@ -1,5 +1,5 @@
-#ifndef CACTUS_UTILS_FILE_STREAM_H_
-#define CACTUS_UTILS_FILE_STREAM_H_
+#ifndef CACTUS_BASE_FILE_STREAM_H_
+#define CACTUS_BASE_FILE_STREAM_H_
 
 #include <stdio.h>
 
@@ -25,4 +25,4 @@ cactus_istream_t* cactus_file_istream_init(cactus_file_istream_t* stream, FILE* 
 
 cactus_ostream_t* cactus_file_ostream_init(cactus_file_ostream_t* stream, FILE* file);
 
-#endif  // CACTUS_UTILS_FILE_STREAM_H_
+#endif  // CACTUS_BASE_FILE_STREAM_H_
