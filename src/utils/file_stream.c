@@ -31,15 +31,15 @@ static bool file_ostream_close(cactus_file_ostream_t* stream) {
 }
 
 static cactus_istream_ops_t file_istream_ops = {
-  &file_istream_read,
-  &file_istream_seek,
-  &file_istream_close,
+    &file_istream_read,
+    &file_istream_seek,
+    &file_istream_close,
 };
 
 static cactus_ostream_ops_t file_ostream_ops = {
-  &file_ostream_write,
-  &file_ostream_flush,
-  &file_ostream_close,
+    &file_ostream_write,
+    &file_ostream_flush,
+    &file_ostream_close,
 };
 
 cactus_istream_t* cactus_file_istream_init(cactus_file_istream_t* stream, FILE* file) {

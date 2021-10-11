@@ -48,8 +48,7 @@ bool cactus_istream_close(cactus_istream_t* stream);
 
 // Output stream methods
 
-size_t cactus_ostream_write(cactus_ostream_t* stream, const uint8_t* buf,
-                            size_t len);
+size_t cactus_ostream_write(cactus_ostream_t* stream, const uint8_t* buf, size_t len);
 bool cactus_ostream_flush(cactus_ostream_t* stream);
 bool cactus_ostream_close(cactus_ostream_t* stream);
 
