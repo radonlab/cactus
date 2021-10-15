@@ -8,21 +8,21 @@
 /**
  * File input stream
  */
-typedef struct cactus_file_istream_t {
-  cactus_istream_t base;
+typedef struct cac_file_istream_t {
+  cac_istream_t base;
   FILE* file;
-} cactus_file_istream_t;
+} cac_file_istream_t;
 
 /**
  * File output stream
  */
-typedef struct cactus_file_ostream_t {
-  cactus_ostream_t base;
+typedef struct cac_file_ostream_t {
+  cac_ostream_t base;
   FILE* file;
-} cactus_file_ostream_t;
+} cac_file_ostream_t;
 
-cactus_istream_t* cactus_file_istream_init(cactus_file_istream_t* stream, FILE* file);
+cac_istream_t* cac_file_istream_init(cac_file_istream_t* stream, FILE* file);
 
-cactus_ostream_t* cactus_file_ostream_init(cactus_file_ostream_t* stream, FILE* file);
+cac_ostream_t* cac_file_ostream_init(cac_file_ostream_t* stream, FILE* file);
 
 #endif  // CACTUS_BASE_FILE_STREAM_H_

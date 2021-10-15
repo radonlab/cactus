@@ -5,51 +5,51 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef struct cactus_istream_ops_t cactus_istream_ops_t;
-typedef struct cactus_ostream_ops_t cactus_ostream_ops_t;
+typedef struct cac_istream_ops_t cac_istream_ops_t;
+typedef struct cac_ostream_ops_t cac_ostream_ops_t;
 
 /**
  * Input stream
  */
-typedef struct cactus_istream_t {
-  const cactus_istream_ops_t* ops;
-} cactus_istream_t;
+typedef struct cac_istream_t {
+  const cac_istream_ops_t* ops;
+} cac_istream_t;
 
 /**
  * Output stream
  */
-typedef struct cactus_ostream_t {
-  const cactus_ostream_ops_t* ops;
-} cactus_ostream_t;
+typedef struct cac_ostream_t {
+  const cac_ostream_ops_t* ops;
+} cac_ostream_t;
 
 /**
  * Input stream operations
  */
-struct cactus_istream_ops_t {
-  size_t (*read)(cactus_istream_t* stream, uint8_t* buf, size_t len);
-  bool (*seek)(cactus_istream_t* stream, size_t pos);
-  bool (*close)(cactus_istream_t* stream);
+struct cac_istream_ops_t {
+  size_t (*read)(cac_istream_t* stream, uint8_t* buf, size_t len);
+  bool (*seek)(cac_istream_t* stream, size_t pos);
+  bool (*close)(cac_istream_t* stream);
 };
 
 /**
  * Output stream operations
  */
-struct cactus_ostream_ops_t {
-  size_t (*write)(cactus_ostream_t* stream, const uint8_t* buf, size_t len);
-  bool (*flush)(cactus_ostream_t* stream);
-  bool (*close)(cactus_ostream_t* stream);
+struct cac_ostream_ops_t {
+  size_t (*write)(cac_ostream_t* stream, const uint8_t* buf, size_t len);
+  bool (*flush)(cac_ostream_t* stream);
+  bool (*close)(cac_ostream_t* stream);
 };
 
 // Input stream methods
 
-size_t cactus_istream_read(cactus_istream_t* stream, uint8_t* buf, size_t len);
-bool cactus_istream_seek(cactus_istream_t* stream, size_t pos);
-bool cactus_istream_close(cactus_istream_t* stream);
+size_t cac_istream_read(cac_istream_t* stream, uint8_t* buf, size_t len);
+bool cac_istream_seek(cac_istream_t* stream, size_t pos);
+bool cac_istream_close(cac_istream_t* stream);
 
 // Output stream methods
 
-size_t cactus_ostream_write(cactus_ostream_t* stream, const uint8_t* buf, size_t len);
-bool cactus_ostream_flush(cactus_ostream_t* stream);
-bool cactus_ostream_close(cactus_ostream_t* stream);
+size_t cac_ostream_write(cac_ostream_t* stream, const uint8_t* buf, size_t len);
+bool cac_ostream_flush(cac_ostream_t* stream);
+bool cac_ostream_close(cac_ostream_t* stream);
 
 #endif  // CACTUS_BASE_STREAM_H_
