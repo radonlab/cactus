@@ -4,7 +4,7 @@ size_t cac_istream_read(cac_istream_t* stream, uint8_t buf[], size_t len) {
   return stream->ops->read(stream, buf, len);
 }
 
-bool cac_istream_seek(cac_istream_t* stream, size_t pos) { return stream->ops->seek(stream, pos); }
+bool cac_istream_seek(cac_istream_t* stream, size_t off, int whence) { return stream->ops->seek(stream, off, whence); }
 
 bool cac_istream_close(cac_istream_t* stream) { return stream->ops->close(stream); }
 

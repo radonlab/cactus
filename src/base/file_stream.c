@@ -6,8 +6,8 @@ static size_t file_istream_read(cac_file_istream_t* stream, uint8_t* buf, size_t
   return fread(buf, sizeof(uint8_t), len, stream->file);
 }
 
-static bool file_istream_seek(cac_file_istream_t* stream, size_t pos) {
-  int ret = fseek(stream->file, pos, SEEK_SET);
+static bool file_istream_seek(cac_file_istream_t* stream, size_t off, int whence) {
+  int ret = fseek(stream->file, off, whence);
   return !ret;
 }
 

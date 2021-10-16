@@ -6,7 +6,7 @@
 
 static size_t buf_istream_read(cac_buf_istream_t* stream, uint8_t* buf, size_t len) { return len; }
 
-static bool buf_istream_seek(cac_buf_istream_t* stream, size_t pos) { return true; }
+static bool buf_istream_seek(cac_buf_istream_t* stream, size_t pos, int whence) {
 
 static size_t buf_ostream_write(cac_buf_ostream_t* stream, const uint8_t* buf, size_t len) { return len; }
 

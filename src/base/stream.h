@@ -27,7 +27,7 @@ typedef struct cac_ostream_t {
  */
 struct cac_istream_ops_t {
   size_t (*read)(cac_istream_t* stream, uint8_t* buf, size_t len);
-  bool (*seek)(cac_istream_t* stream, size_t pos);
+  bool (*seek)(cac_istream_t* stream, size_t off, int whence);
   bool (*close)(cac_istream_t* stream);
 };
 
@@ -43,7 +43,7 @@ struct cac_ostream_ops_t {
 // Input stream methods
 
 size_t cac_istream_read(cac_istream_t* stream, uint8_t* buf, size_t len);
-bool cac_istream_seek(cac_istream_t* stream, size_t pos);
+bool cac_istream_seek(cac_istream_t* stream, size_t off, int whence);
 bool cac_istream_close(cac_istream_t* stream);
 
 // Output stream methods
