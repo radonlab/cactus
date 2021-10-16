@@ -1,4 +1,4 @@
-#include "stream.h"
+#include "base/stream.h"
 
 size_t cac_istream_read(cac_istream_t* stream, uint8_t buf[], size_t len) {
   return stream->ops->read(stream, buf, len);

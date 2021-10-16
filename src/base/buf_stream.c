@@ -1,4 +1,4 @@
-#include "buf_stream.h"
+#include "base/buf_stream.h"
 
 #define ENLARGE_CAP(x) (x + x >> 1)
 

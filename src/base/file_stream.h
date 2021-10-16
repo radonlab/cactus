@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "stream.h"
+#include "base/stream.h"
 
 /**
  * File input stream

@@ -1,7 +1,7 @@
 #ifndef CACTUS_BASE_BUF_STREAM_H_
 #define CACTUS_BASE_BUF_STREAM_H_
 
-#include "stream.h"
+#include "base/stream.h"
 
 #define BUF_STREAM_INIT_CAP 0x400
 
