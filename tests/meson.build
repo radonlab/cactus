@@ -1,4 +1,8 @@
-test_srcs = files('syntax/statement.c')
+test_srcs = files(
+  'base/buf_stream.c',
+  'base/file_stream.c',
+  'syntax/statement.c',
+)
 
 test_srcs += files('clar.c', 'tests.c')
 

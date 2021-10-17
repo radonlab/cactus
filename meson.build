@@ -4,12 +4,20 @@ project('cactus', 'c',
 )
 
 inc_dir = include_directories('include')
+src_dir = include_directories('src')
 
-srcs = files('src/parser/grammar.c', 'src/main.c')
+srcs = files(
+  'src/base/buf_stream.c',
+  'src/base/common.c',
+  'src/base/file_stream.c',
+  'src/base/stream.c',
+  'src/parser/grammar.c',
+  'src/main.c',
+)
 
 executable('cactus',
   srcs,
-  include_directories: [inc_dir],
+  include_directories: [inc_dir, src_dir],
   install: true
 )
 
