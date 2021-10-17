@@ -5,7 +5,7 @@
 
 #include "base/common.h"
 
-#define ENLARGE_CAPACITY(x) (x + x >> 1)
+#define ENLARGE_CAPACITY(x) (x + (x >> 1))
 
 static size_t buf_istream_read(cac_buf_istream_t* stream, uint8_t* buf, size_t len) {
   if (len == 0) {

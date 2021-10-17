@@ -4,6 +4,7 @@
 #include "base/stream.h"
 
 #define BUF_STREAM_INIT_CAP 0x400
+#define BUF_STREAM_MULT_CAP(n) (BUF_STREAM_INIT_CAP << n)
 
 /**
  * Buffer input stream
