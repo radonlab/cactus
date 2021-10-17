@@ -81,7 +81,7 @@ class Module(object):
         self.modified = False
 
     def clean_name(self):
-        return self.name.replace("_", "::")
+        return self.name.replace("__", "::")
 
     def _skip_comments(self, text):
         SKIP_COMMENTS_REGEX = re.compile(
@@ -166,7 +166,7 @@ class TestSuite(object):
 
             for test_file in tests_in_module:
                 full_path = os.path.join(root, test_file)
-                module_name = "_".join(module_root + [test_file[:-2]]).replace("-", "_")
+                module_name = "__".join(module_root + [test_file[:-2]]).replace("-", "_")
 
                 modules.append((full_path, module_name))
 
