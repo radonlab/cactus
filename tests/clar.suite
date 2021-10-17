@@ -1,14 +1,38 @@
-extern void test_syntax_statement__foo();
-static const struct clar_func _clar_cb_syntax_statement[] = {
-    { "foo", &test_syntax_statement__foo }
+extern void test_base__buf_stream__read();
+extern void test_base__buf_stream__write();
+extern void test_base__file_stream__read();
+extern void test_base__file_stream__write();
+extern void test_syntax__statement__foo();
+static const struct clar_func _clar_cb_base__buf_stream[] = {
+    { "read", &test_base__buf_stream__read },
+    { "write", &test_base__buf_stream__write }
+};
+static const struct clar_func _clar_cb_base__file_stream[] = {
+    { "read", &test_base__file_stream__read },
+    { "write", &test_base__file_stream__write }
+};
+static const struct clar_func _clar_cb_syntax__statement[] = {
+    { "foo", &test_syntax__statement__foo }
 };
 static struct clar_suite _clar_suites[] = {
+    {
+        "base::buf_stream",
+        { NULL, NULL },
+        { NULL, NULL },
+        _clar_cb_base__buf_stream, 2, 1
+    },
+    {
+        "base::file_stream",
+        { NULL, NULL },
+        { NULL, NULL },
+        _clar_cb_base__file_stream, 2, 1
+    },
     {
         "syntax::statement",
         { NULL, NULL },
         { NULL, NULL },
-        _clar_cb_syntax_statement, 1, 1
+        _clar_cb_syntax__statement, 1, 1
     }
 };
-static const size_t _clar_suite_count = 1;
-static const size_t _clar_callback_count = 1;
+static const size_t _clar_suite_count = 3;
+static const size_t _clar_callback_count = 5;

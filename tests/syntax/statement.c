@@ -1,2 +1,1 @@
-void test_syntax_statement__foo() {
-}
+void test_syntax__statement__foo() {}
