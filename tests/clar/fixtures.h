@@ -15,13 +15,9 @@ static const char* fixture_path(const char* base, const char* fixture_name) {
 }
 
 #ifdef CLAR_FIXTURE_PATH
-const char* cl_fixture(const char* fixture_name) {
-  return fixture_path(CLAR_FIXTURE_PATH, fixture_name);
-}
+const char* cl_fixture(const char* fixture_name) { return fixture_path(CLAR_FIXTURE_PATH, fixture_name); }
 
-void cl_fixture_sandbox(const char* fixture_name) {
-  fs_copy(cl_fixture(fixture_name), _clar_path);
-}
+void cl_fixture_sandbox(const char* fixture_name) { fs_copy(cl_fixture(fixture_name), _clar_path); }
 
 const char* cl_fixture_basename(const char* fixture_name) {
   const char* p;

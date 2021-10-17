@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 
-int clar_summary_close_tag(struct clar_summary* summary, const char* tag,
-                           int indent) {
+int clar_summary_close_tag(struct clar_summary* summary, const char* tag, int indent) {
   const char* indt;
 
   if (indent == 0)
@@ -15,14 +14,10 @@ int clar_summary_close_tag(struct clar_summary* summary, const char* tag,
   return fprintf(summary->fp, "%s</%s>\n", indt, tag);
 }
 
-int clar_summary_testsuites(struct clar_summary* summary) {
-  return fprintf(summary->fp, "<testsuites>\n");
-}
+int clar_summary_testsuites(struct clar_summary* summary) { return fprintf(summary->fp, "<testsuites>\n"); }
 
-int clar_summary_testsuite(struct clar_summary* summary, int idn,
-                           const char* name, const char* pkg, time_t timestamp,
-                           double elapsed, int test_count, int fail_count,
-                           int error_count) {
+int clar_summary_testsuite(struct clar_summary* summary, int idn, const char* name, const char* pkg, time_t timestamp,
+                           double elapsed, int test_count, int fail_count, int error_count) {
   struct tm* tm = localtime(&timestamp);
   char iso_dt[20];
 
@@ -39,22 +34,15 @@ int clar_summary_testsuite(struct clar_summary* summary, int idn,
                  " tests=\"%d\""
                  " failures=\"%d\""
                  " errors=\"%d\">\n",
-                 idn, name, pkg, iso_dt, elapsed, test_count, fail_count,
-                 error_count);
+                 idn, name, pkg, iso_dt, elapsed, test_count, fail_count, error_count);
 }
 
-int clar_summary_testcase(struct clar_summary* summary, const char* name,
-                          const char* classname, double elapsed) {
-  return fprintf(summary->fp,
-                 "\t\t<testcase name=\"%s\" classname=\"%s\" time=\"%.2f\">\n",
-                 name, classname, elapsed);
+int clar_summary_testcase(struct clar_summary* summary, const char* name, const char* classname, double elapsed) {
+  return fprintf(summary->fp, "\t\t<testcase name=\"%s\" classname=\"%s\" time=\"%.2f\">\n", name, classname, elapsed);
 }
 
-int clar_summary_failure(struct clar_summary* summary, const char* type,
-                         const char* message, const char* desc) {
-  return fprintf(summary->fp,
-                 "\t\t\t<failure type=\"%s\"><![CDATA[%s\n%s]]></failure>\n",
-                 type, message, desc);
+int clar_summary_failure(struct clar_summary* summary, const char* type, const char* message, const char* desc) {
+  return fprintf(summary->fp, "\t\t\t<failure type=\"%s\"><![CDATA[%s\n%s]]></failure>\n", type, message, desc);
 }
 
 struct clar_summary* clar_summary_init(const char* filename) {
@@ -85,8 +73,8 @@ int clar_summary_shutdown(struct clar_summary* summary) {
     struct clar_error* error = report->errors;
 
     if (last_suite == NULL || strcmp(last_suite, report->suite) != 0) {
-      if (clar_summary_testsuite(summary, 0, report->suite, "", time(NULL), 0,
-                                 _clar.tests_ran, _clar.total_errors, 0) < 0)
+      if (clar_summary_testsuite(summary, 0, report->suite, "", time(NULL), 0, _clar.tests_ran, _clar.total_errors, 0) <
+          0)
         goto on_error;
     }
 
@@ -95,9 +83,7 @@ int clar_summary_shutdown(struct clar_summary* summary) {
     clar_summary_testcase(summary, report->test, "what", 0);
 
     while (error != NULL) {
-      if (clar_summary_failure(summary, "assert", error->error_msg,
-                               error->description) < 0)
-        goto on_error;
+      if (clar_summary_failure(summary, "assert", error->error_msg, error->description) < 0) goto on_error;
 
       error = error->next;
     }
@@ -111,9 +97,7 @@ int clar_summary_shutdown(struct clar_summary* summary) {
     }
   }
 
-  if (clar_summary_close_tag(summary, "testsuites", 0) < 0 ||
-      fclose(summary->fp) != 0)
-    goto on_error;
+  if (clar_summary_close_tag(summary, "testsuites", 0) < 0 || fclose(summary->fp) != 0) goto on_error;
 
   printf("written summary file to %s\n", summary->filename);
 

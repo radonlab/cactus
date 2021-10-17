@@ -40,9 +40,7 @@ static bool buf_istream_seek(cac_buf_istream_t* stream, size_t off, int whence) 
   return true;
 }
 
-static bool buf_istream_close(cac_buf_istream_t* stream) {
-  return true;
-}
+static bool buf_istream_close(cac_buf_istream_t* stream) { return true; }
 
 static void buf_ostream_ensure_capacity(cac_buf_ostream_t* stream, size_t size) {
   if (size > stream->capacity) {
@@ -61,9 +59,7 @@ static size_t buf_ostream_write(cac_buf_ostream_t* stream, const uint8_t* buf, s
   return len;
 }
 
-static bool buf_ostream_flush(cac_buf_ostream_t* stream) {
-  return true;
-}
+static bool buf_ostream_flush(cac_buf_ostream_t* stream) { return true; }
 
 static bool buf_ostream_close(cac_buf_ostream_t* stream) {
   cac_free(stream->buf);

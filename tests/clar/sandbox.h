@@ -17,8 +17,7 @@ static int is_valid_tmp_path(const char* path) {
 static int find_tmp_path(char* buffer, size_t length) {
 #ifndef _WIN32
   static const size_t var_count = 5;
-  static const char* env_vars[] = {"CLAR_TMP", "TMPDIR", "TMP", "TEMP",
-                                   "USERPROFILE"};
+  static const char* env_vars[] = {"CLAR_TMP", "TMPDIR", "TMP", "TEMP", "USERPROFILE"};
 
   size_t i;
 

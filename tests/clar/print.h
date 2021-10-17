@@ -1,14 +1,12 @@
 /* clap: clar protocol, the traditional clar output format */
 
-static void clar_print_clap_init(int test_count, int suite_count,
-                                 const char* suite_names) {
+static void clar_print_clap_init(int test_count, int suite_count, const char* suite_names) {
   (void)test_count;
   printf("Loaded %d suites: %s\n", (int)suite_count, suite_names);
   printf("Started (test status codes: OK='.' FAILURE='F' SKIPPED='S')\n");
 }
 
-static void clar_print_clap_shutdown(int test_count, int suite_count,
-                                     int error_count) {
+static void clar_print_clap_shutdown(int test_count, int suite_count, int error_count) {
   (void)test_count;
   (void)suite_count;
   (void)error_count;
@@ -17,12 +15,10 @@ static void clar_print_clap_shutdown(int test_count, int suite_count,
   clar_report_all();
 }
 
-static void clar_print_clap_error(int num, const struct clar_report* report,
-                                  const struct clar_error* error) {
+static void clar_print_clap_error(int num, const struct clar_report* report, const struct clar_error* error) {
   printf("  %d) Failure:\n", num);
 
-  printf("%s::%s [%s:%" PRIuZ "]\n", report->suite, report->test, error->file,
-         error->line_number);
+  printf("%s::%s [%s:%" PRIuZ "]\n", report->suite, report->test, error->file, error->line_number);
 
   printf("  %s\n", error->error_msg);
 
@@ -32,8 +28,7 @@ static void clar_print_clap_error(int num, const struct clar_report* report,
   fflush(stdout);
 }
 
-static void clar_print_clap_ontest(const char* test_name, int test_number,
-                                   enum cl_test_status status) {
+static void clar_print_clap_ontest(const char* test_name, int test_number, enum cl_test_status status) {
   (void)test_name;
   (void)test_number;
 
@@ -61,30 +56,25 @@ static void clar_print_clap_onsuite(const char* suite_name, int suite_index) {
   (void)suite_index;
 }
 
-static void clar_print_clap_onabort(const char* fmt, va_list arg) {
-  vfprintf(stderr, fmt, arg);
-}
+static void clar_print_clap_onabort(const char* fmt, va_list arg) { vfprintf(stderr, fmt, arg); }
 
 /* tap: test anywhere protocol format */
 
-static void clar_print_tap_init(int test_count, int suite_count,
-                                const char* suite_names) {
+static void clar_print_tap_init(int test_count, int suite_count, const char* suite_names) {
   (void)test_count;
   (void)suite_count;
   (void)suite_names;
   printf("TAP version 13\n");
 }
 
-static void clar_print_tap_shutdown(int test_count, int suite_count,
-                                    int error_count) {
+static void clar_print_tap_shutdown(int test_count, int suite_count, int error_count) {
   (void)suite_count;
   (void)error_count;
 
   printf("1..%d\n", test_count);
 }
 
-static void clar_print_tap_error(int num, const struct clar_report* report,
-                                 const struct clar_error* error) {
+static void clar_print_tap_error(int num, const struct clar_report* report, const struct clar_error* error) {
   (void)num;
   (void)report;
   (void)error;
@@ -102,8 +92,7 @@ static void print_escaped(const char* str) {
   printf("%s", str);
 }
 
-static void clar_print_tap_ontest(const char* test_name, int test_number,
-                                  enum cl_test_status status) {
+static void clar_print_tap_ontest(const char* test_name, int test_number, enum cl_test_status status) {
   const struct clar_error* error = _clar.last_report->errors;
 
   (void)test_name;
@@ -114,8 +103,7 @@ static void clar_print_tap_ontest(const char* test_name, int test_number,
       printf("ok %d - %s::%s\n", test_number, _clar.active_suite, test_name);
       break;
     case CL_TEST_FAILURE:
-      printf("not ok %d - %s::%s\n", test_number, _clar.active_suite,
-             test_name);
+      printf("not ok %d - %s::%s\n", test_number, _clar.active_suite, test_name);
 
       printf("    ---\n");
       printf("    reason: |\n");
@@ -134,8 +122,7 @@ static void clar_print_tap_ontest(const char* test_name, int test_number,
       break;
     case CL_TEST_SKIP:
     case CL_TEST_NOTRUN:
-      printf("ok %d - # SKIP %s::%s\n", test_number, _clar.active_suite,
-             test_name);
+      printf("ok %d - # SKIP %s::%s\n", test_number, _clar.active_suite, test_name);
       break;
   }
 
@@ -168,29 +155,23 @@ static void clar_print_tap_onabort(const char* fmt, va_list arg) {
     }                                      \
   } while (0)
 
-static void clar_print_init(int test_count, int suite_count,
-                            const char* suite_names) {
+static void clar_print_init(int test_count, int suite_count, const char* suite_names) {
   PRINT(init, test_count, suite_count, suite_names);
 }
 
-static void clar_print_shutdown(int test_count, int suite_count,
-                                int error_count) {
+static void clar_print_shutdown(int test_count, int suite_count, int error_count) {
   PRINT(shutdown, test_count, suite_count, error_count);
 }
 
-static void clar_print_error(int num, const struct clar_report* report,
-                             const struct clar_error* error) {
+static void clar_print_error(int num, const struct clar_report* report, const struct clar_error* error) {
   PRINT(error, num, report, error);
 }
 
-static void clar_print_ontest(const char* test_name, int test_number,
-                              enum cl_test_status status) {
+static void clar_print_ontest(const char* test_name, int test_number, enum cl_test_status status) {
   PRINT(ontest, test_name, test_number, status);
 }
 
-static void clar_print_onsuite(const char* suite_name, int suite_index) {
-  PRINT(onsuite, suite_name, suite_index);
-}
+static void clar_print_onsuite(const char* suite_name, int suite_index) { PRINT(onsuite, suite_name, suite_index); }
 
 static void clar_print_onabort(const char* msg, ...) {
   va_list argp;

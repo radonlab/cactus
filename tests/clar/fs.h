@@ -27,8 +27,7 @@
 #endif /* __MINGW32__ */
 
 static int fs__dotordotdot(WCHAR* _tocheck) {
-  return _tocheck[0] == '.' &&
-         (_tocheck[1] == '\0' || (_tocheck[1] == '.' && _tocheck[2] == '\0'));
+  return _tocheck[0] == '.' && (_tocheck[1] == '\0' || (_tocheck[1] == '.' && _tocheck[2] == '\0'));
 }
 
 static int fs_rmdir_rmdir(WCHAR* _wpath) {
@@ -37,8 +36,7 @@ static int fs_rmdir_rmdir(WCHAR* _wpath) {
   while (!RemoveDirectoryW(_wpath)) {
     /* Only retry when we have retries remaining, and the
      * error was ERROR_DIR_NOT_EMPTY. */
-    if (retries++ > RM_RETRY_COUNT || ERROR_DIR_NOT_EMPTY != GetLastError())
-      return -1;
+    if (retries++ > RM_RETRY_COUNT || ERROR_DIR_NOT_EMPTY != GetLastError()) return -1;
 
     /* Give whatever has a handle to a child item some time
      * to release it before trying again */
@@ -94,16 +92,14 @@ static void fs_rmdir_helper(WCHAR* _wsource) {
      * entries at the beginning */
     if (fs__dotordotdot(find_data.cFileName)) continue;
 
-    wcscpy_s(buffer + buffer_prefix_len, CLAR_MAX_PATH - buffer_prefix_len,
-             find_data.cFileName);
+    wcscpy_s(buffer + buffer_prefix_len, CLAR_MAX_PATH - buffer_prefix_len, find_data.cFileName);
 
     if (FILE_ATTRIBUTE_DIRECTORY & find_data.dwFileAttributes)
       fs_rmdir_helper(buffer);
     else {
       /* If set, the +R bit must be cleared before deleting */
       if (FILE_ATTRIBUTE_READONLY & find_data.dwFileAttributes)
-        cl_assert(SetFileAttributesW(
-            buffer, find_data.dwFileAttributes & ~FILE_ATTRIBUTE_READONLY));
+        cl_assert(SetFileAttributesW(buffer, find_data.dwFileAttributes & ~FILE_ATTRIBUTE_READONLY));
 
       cl_assert(DeleteFileW(buffer));
     }
@@ -130,9 +126,7 @@ static int fs_rm_wait(WCHAR* _wpath) {
       last_error = ERROR_SUCCESS;
 
     /* Is the item gone? */
-    if (ERROR_FILE_NOT_FOUND == last_error ||
-        ERROR_PATH_NOT_FOUND == last_error)
-      return 0;
+    if (ERROR_FILE_NOT_FOUND == last_error || ERROR_PATH_NOT_FOUND == last_error) return 0;
 
     Sleep(RM_RETRY_DELAY * retries * retries);
   } while (retries++ <= RM_RETRY_COUNT);
@@ -146,8 +140,7 @@ static void fs_rm(const char* _source) {
 
   /* The input path is UTF-8. Convert it to wide characters
    * for use with the Windows API */
-  cl_assert(MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, _source,
-                                -1, /* Indicates NULL termination */
+  cl_assert(MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, _source, -1, /* Indicates NULL termination */
                                 wsource, CLAR_MAX_PATH));
 
   translate_path(wsource, CLAR_MAX_PATH);
@@ -161,8 +154,7 @@ static void fs_rm(const char* _source) {
     fs_rmdir_helper(wsource);
   else {
     /* The item is a file. Strip the +R bit */
-    if (FILE_ATTRIBUTE_READONLY & attrs)
-      cl_assert(SetFileAttributesW(wsource, attrs & ~FILE_ATTRIBUTE_READONLY));
+    if (FILE_ATTRIBUTE_READONLY & attrs) cl_assert(SetFileAttributesW(wsource, attrs & ~FILE_ATTRIBUTE_READONLY));
 
     cl_assert(DeleteFileW(wsource));
   }
@@ -200,10 +192,8 @@ static void fs_copydir_helper(WCHAR* _wsource, WCHAR* _wdest) {
      * entries at the beginning */
     if (fs__dotordotdot(find_data.cFileName)) continue;
 
-    wcscpy_s(buf_source + buf_source_prefix_len,
-             CLAR_MAX_PATH - buf_source_prefix_len, find_data.cFileName);
-    wcscpy_s(buf_dest + buf_dest_prefix_len,
-             CLAR_MAX_PATH - buf_dest_prefix_len, find_data.cFileName);
+    wcscpy_s(buf_source + buf_source_prefix_len, CLAR_MAX_PATH - buf_source_prefix_len, find_data.cFileName);
+    wcscpy_s(buf_dest + buf_dest_prefix_len, CLAR_MAX_PATH - buf_dest_prefix_len, find_data.cFileName);
 
     if (FILE_ATTRIBUTE_DIRECTORY & find_data.dwFileAttributes)
       fs_copydir_helper(buf_source, buf_dest);
@@ -226,11 +216,9 @@ static void fs_copy(const char* _source, const char* _dest) {
 
   /* The input paths are UTF-8. Convert them to wide characters
    * for use with the Windows API. */
-  cl_assert(MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, _source, -1,
-                                wsource, CLAR_MAX_PATH));
+  cl_assert(MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, _source, -1, wsource, CLAR_MAX_PATH));
 
-  cl_assert(MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, _dest, -1, wdest,
-                                CLAR_MAX_PATH));
+  cl_assert(MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, _dest, -1, wdest, CLAR_MAX_PATH));
 
   translate_path(wsource, CLAR_MAX_PATH);
   translate_path(wdest, CLAR_MAX_PATH);
@@ -324,8 +312,7 @@ static char* joinpath(const char* dir, const char* base, int base_len) {
   return out;
 }
 
-static void fs_copydir_helper(const char* source, const char* dest,
-                              int dest_mode) {
+static void fs_copydir_helper(const char* source, const char* dest, int dest_mode) {
   DIR* source_dir;
   struct dirent* d;
 
@@ -347,8 +334,7 @@ static void fs_copydir_helper(const char* source, const char* dest,
   closedir(source_dir);
 }
 
-static void fs_copyfile_helper(const char* source, size_t source_len,
-                               const char* dest, int dest_mode) {
+static void fs_copyfile_helper(const char* source, size_t source_len, const char* dest, int dest_mode) {
   int in, out;
 
   cl_must_pass((in = open(source, O_RDONLY)));

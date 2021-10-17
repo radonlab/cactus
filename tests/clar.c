@@ -55,8 +55,7 @@
 #ifndef S_ISDIR
 #define S_ISDIR(x) ((x & _S_IFDIR) != 0)
 #endif
-#define p_snprintf(buf, sz, fmt, ...) \
-  _snprintf_s(buf, sz, _TRUNCATE, fmt, __VA_ARGS__)
+#define p_snprintf(buf, sz, fmt, ...) _snprintf_s(buf, sz, _TRUNCATE, fmt, __VA_ARGS__)
 #else
 #define p_snprintf snprintf
 #endif
@@ -183,14 +182,10 @@ struct clar_suite {
 };
 
 /* From clar_print_*.c */
-static void clar_print_init(int test_count, int suite_count,
-                            const char* suite_names);
-static void clar_print_shutdown(int test_count, int suite_count,
-                                int error_count);
-static void clar_print_error(int num, const struct clar_report* report,
-                             const struct clar_error* error);
-static void clar_print_ontest(const char* test_name, int test_number,
-                              enum cl_test_status failed);
+static void clar_print_init(int test_count, int suite_count, const char* suite_names);
+static void clar_print_shutdown(int test_count, int suite_count, int error_count);
+static void clar_print_error(int num, const struct clar_report* report, const struct clar_error* error);
+static void clar_print_ontest(const char* test_name, int test_number, enum cl_test_status failed);
 static void clar_print_onsuite(const char* suite_name, int suite_index);
 static void clar_print_onabort(const char* msg, ...);
 
@@ -205,11 +200,9 @@ static int clar_summary_shutdown(struct clar_summary* fp);
 /* Load the declarations for the test suite */
 #include "clar.suite"
 
-#define CL_TRACE(ev)                                                \
-  do {                                                              \
-    if (_clar.pfn_trace_cb)                                         \
-      _clar.pfn_trace_cb(ev, _clar.active_suite, _clar.active_test, \
-                         _clar.trace_payload);                      \
+#define CL_TRACE(ev)                                                                                            \
+  do {                                                                                                          \
+    if (_clar.pfn_trace_cb) _clar.pfn_trace_cb(ev, _clar.active_suite, _clar.active_test, _clar.trace_payload); \
   } while (0)
 
 void cl_trace_register(cl_trace_cb* cb, void* payload) {
@@ -222,8 +215,7 @@ static void clar_report_errors(struct clar_report* report) {
   struct clar_error* error;
   int i = 1;
 
-  for (error = report->errors; error; error = error->next)
-    clar_print_error(i++, _clar.last_report, error);
+  for (error = report->errors; error; error = error->next) clar_print_error(i++, _clar.last_report, error);
 }
 
 static void clar_report_all(void) {
@@ -234,13 +226,11 @@ static void clar_report_all(void) {
   for (report = _clar.reports; report; report = report->next) {
     if (report->status != CL_TEST_FAILURE) continue;
 
-    for (error = report->errors; error; error = error->next)
-      clar_print_error(i++, report, error);
+    for (error = report->errors; error; error = error->next) clar_print_error(i++, report, error);
   }
 }
 
-static void clar_run_test(const struct clar_func* test,
-                          const struct clar_func* initialize,
+static void clar_run_test(const struct clar_func* test, const struct clar_func* initialize,
                           const struct clar_func* cleanup) {
   _clar.trampoline_enabled = 1;
 
@@ -256,11 +246,9 @@ static void clar_run_test(const struct clar_func* test,
 
   _clar.trampoline_enabled = 0;
 
-  if (_clar.last_report->status == CL_TEST_NOTRUN)
-    _clar.last_report->status = CL_TEST_OK;
+  if (_clar.last_report->status == CL_TEST_NOTRUN) _clar.last_report->status = CL_TEST_OK;
 
-  if (_clar.local_cleanup != NULL)
-    _clar.local_cleanup(_clar.local_cleanup_payload);
+  if (_clar.local_cleanup != NULL) _clar.local_cleanup(_clar.local_cleanup_payload);
 
   if (cleanup->ptr != NULL) cleanup->ptr();
 
@@ -289,8 +277,7 @@ static void clar_run_suite(const struct clar_suite* suite, const char* filter) {
 
   if (_clar.exit_on_error && _clar.total_errors) return;
 
-  if (!_clar.report_errors_only)
-    clar_print_onsuite(suite->name, ++_clar.suites_ran);
+  if (!_clar.report_errors_only) clar_print_onsuite(suite->name, ++_clar.suites_ran);
 
   _clar.active_suite = suite->name;
   _clar.active_test = NULL;
@@ -365,8 +352,7 @@ static void clar_parse_args(int argc, char** argv) {
   for (i = 1; i < argc; ++i) {
     char* argument = argv[i];
 
-    if (argument[0] != '-' || argument[1] == '\0' ||
-        strchr("sixvqQtlr", argument[1]) == NULL) {
+    if (argument[0] != '-' || argument[1] == '\0' || strchr("sixvqQtlr", argument[1]) == NULL) {
       clar_usage(argv[0]);
     }
   }
@@ -396,9 +382,7 @@ static void clar_parse_args(int argc, char** argv) {
 
             /* Do we have a real suite prefix separated by a
              * trailing '::' or just a matching substring? */
-            if (arglen > suitelen &&
-                (argument[suitelen] != ':' || argument[suitelen + 1] != ':'))
-              continue;
+            if (arglen > suitelen && (argument[suitelen] != ':' || argument[suitelen + 1] != ':')) continue;
 
             ++found;
 
@@ -406,8 +390,7 @@ static void clar_parse_args(int argc, char** argv) {
 
             switch (action) {
               case 's': {
-                struct clar_explicit* explicit =
-                    calloc(1, sizeof(struct clar_explicit));
+                struct clar_explicit* explicit = calloc(1, sizeof(struct clar_explicit));
                 assert(explicit);
 
                 explicit->suite_idx = j;
@@ -415,8 +398,7 @@ static void clar_parse_args(int argc, char** argv) {
 
                 if (_clar.explicit == NULL) _clar.explicit = explicit;
 
-                if (_clar.last_explicit != NULL)
-                  _clar.last_explicit->next = explicit;
+                if (_clar.last_explicit != NULL) _clar.last_explicit->next = explicit;
 
                 _clar_suites[j].enabled = 1;
                 _clar.last_explicit = explicit;
@@ -456,8 +438,7 @@ static void clar_parse_args(int argc, char** argv) {
       case 'l': {
         size_t j;
         printf("Test suites (use -s<name> to run just one):\n");
-        for (j = 0; j < _clar_suite_count; ++j)
-          printf(" %3d: %s\n", (int)j, _clar_suites[j].name);
+        for (j = 0; j < _clar_suite_count; ++j) printf(" %3d: %s\n", (int)j, _clar_suites[j].name);
 
         exit(0);
       }
@@ -469,8 +450,7 @@ static void clar_parse_args(int argc, char** argv) {
       case 'r':
         _clar.write_summary = 1;
         free(_clar.summary_filename);
-        _clar.summary_filename =
-            strdup(*(argument + 2) ? (argument + 2) : "summary.xml");
+        _clar.summary_filename = strdup(*(argument + 2) ? (argument + 2) : "summary.xml");
         break;
 
       default:
@@ -489,8 +469,7 @@ void clar_test_init(int argc, char** argv) {
     _clar.summary_filename = strdup(_clar.summary_filename);
   }
 
-  if (_clar.write_summary &&
-      !(_clar.summary = clar_summary_init(_clar.summary_filename))) {
+  if (_clar.write_summary && !(_clar.summary = clar_summary_init(_clar.summary_filename))) {
     clar_print_onabort("Failed to open the summary file\n");
     exit(-1);
   }
@@ -509,8 +488,7 @@ int clar_test_run(void) {
     for (explicit = _clar.explicit; explicit; explicit = explicit->next)
       clar_run_suite(&_clar_suites[explicit->suite_idx], explicit->filter);
   } else {
-    for (i = 0; i < _clar_suite_count; ++i)
-      clar_run_suite(&_clar_suites[i], NULL);
+    for (i = 0; i < _clar_suite_count; ++i) clar_run_suite(&_clar_suites[i], NULL);
   }
 
   return _clar.total_errors;
@@ -520,8 +498,7 @@ void clar_test_shutdown(void) {
   struct clar_explicit* explicit, *explicit_next;
   struct clar_report *report, *report_next;
 
-  clar_print_shutdown(_clar.tests_ran, (int)_clar_suite_count,
-                      _clar.total_errors);
+  clar_print_shutdown(_clar.tests_ran, (int)_clar_suite_count, _clar.total_errors);
 
   clar_unsandbox();
 
@@ -570,15 +547,13 @@ void clar__skip(void) {
   abort_test();
 }
 
-void clar__fail(const char* file, const char* function, size_t line,
-                const char* error_msg, const char* description,
+void clar__fail(const char* file, const char* function, size_t line, const char* error_msg, const char* description,
                 int should_abort) {
   struct clar_error* error = calloc(1, sizeof(struct clar_error));
 
   if (_clar.last_report->errors == NULL) _clar.last_report->errors = error;
 
-  if (_clar.last_report->last_error != NULL)
-    _clar.last_report->last_error->next = error;
+  if (_clar.last_report->last_error != NULL) _clar.last_report->last_error->next = error;
 
   _clar.last_report->last_error = error;
 
@@ -595,17 +570,15 @@ void clar__fail(const char* file, const char* function, size_t line,
   if (should_abort) abort_test();
 }
 
-void clar__assert(int condition, const char* file, const char* function,
-                  size_t line, const char* error_msg, const char* description,
-                  int should_abort) {
+void clar__assert(int condition, const char* file, const char* function, size_t line, const char* error_msg,
+                  const char* description, int should_abort) {
   if (condition) return;
 
   clar__fail(file, function, line, error_msg, description, should_abort);
 }
 
-void clar__assert_equal(const char* file, const char* function, size_t line,
-                        const char* err, int should_abort, const char* fmt,
-                        ...) {
+void clar__assert_equal(const char* file, const char* function, size_t line, const char* err, int should_abort,
+                        const char* fmt, ...) {
   va_list args;
   char buf[4096];
   int is_equal = 1;
@@ -620,8 +593,8 @@ void clar__assert_equal(const char* file, const char* function, size_t line,
     if (!is_equal) {
       if (s1 && s2) {
         int pos;
-        for (pos = 0; s1[pos] == s2[pos] && s1[pos] && s2[pos]; ++pos)
-          /* find differing byte offset */;
+        for (pos = 0; s1[pos] == s2[pos] && s1[pos] && s2[pos]; ++pos) /* find differing byte offset */
+          ;
         p_snprintf(buf, sizeof(buf), "'%s' != '%s' (at byte %d)", s1, s2, pos);
       } else {
         p_snprintf(buf, sizeof(buf), "'%s' != '%s'", s1, s2);
@@ -636,10 +609,9 @@ void clar__assert_equal(const char* file, const char* function, size_t line,
     if (!is_equal) {
       if (s1 && s2) {
         int pos;
-        for (pos = 0; s1[pos] == s2[pos] && pos < len; ++pos)
-          /* find differing byte offset */;
-        p_snprintf(buf, sizeof(buf), "'%.*s' != '%.*s' (at byte %d)", len, s1,
-                   len, s2, pos);
+        for (pos = 0; s1[pos] == s2[pos] && pos < len; ++pos) /* find differing byte offset */
+          ;
+        p_snprintf(buf, sizeof(buf), "'%.*s' != '%.*s' (at byte %d)", len, s1, len, s2, pos);
       } else {
         p_snprintf(buf, sizeof(buf), "'%.*s' != '%.*s'", len, s1, len, s2);
       }
@@ -652,10 +624,9 @@ void clar__assert_equal(const char* file, const char* function, size_t line,
     if (!is_equal) {
       if (wcs1 && wcs2) {
         int pos;
-        for (pos = 0; wcs1[pos] == wcs2[pos] && wcs1[pos] && wcs2[pos]; ++pos)
-          /* find differing byte offset */;
-        p_snprintf(buf, sizeof(buf), "'%ls' != '%ls' (at byte %d)", wcs1, wcs2,
-                   pos);
+        for (pos = 0; wcs1[pos] == wcs2[pos] && wcs1[pos] && wcs2[pos]; ++pos) /* find differing byte offset */
+          ;
+        p_snprintf(buf, sizeof(buf), "'%ls' != '%ls' (at byte %d)", wcs1, wcs2, pos);
       } else {
         p_snprintf(buf, sizeof(buf), "'%ls' != '%ls'", wcs1, wcs2);
       }
@@ -669,13 +640,11 @@ void clar__assert_equal(const char* file, const char* function, size_t line,
     if (!is_equal) {
       if (wcs1 && wcs2) {
         int pos;
-        for (pos = 0; wcs1[pos] == wcs2[pos] && pos < len; ++pos)
-          /* find differing byte offset */;
-        p_snprintf(buf, sizeof(buf), "'%.*ls' != '%.*ls' (at byte %d)", len,
-                   wcs1, len, wcs2, pos);
+        for (pos = 0; wcs1[pos] == wcs2[pos] && pos < len; ++pos) /* find differing byte offset */
+          ;
+        p_snprintf(buf, sizeof(buf), "'%.*ls' != '%.*ls' (at byte %d)", len, wcs1, len, wcs2, pos);
       } else {
-        p_snprintf(buf, sizeof(buf), "'%.*ls' != '%.*ls'", len, wcs1, len,
-                   wcs2);
+        p_snprintf(buf, sizeof(buf), "'%.*ls' != '%.*ls'", len, wcs1, len, wcs2);
       }
     }
   } else if (!strcmp("%" PRIuZ, fmt) || !strcmp("%" PRIxZ, fmt)) {

@@ -1,9 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void handle_out_of_memory() {
-  abort();
-}
+void handle_out_of_memory() { abort(); }
 
 void* cac_malloc(size_t size) {
   assert(size != 0);
@@ -32,6 +30,4 @@ void* cac_realloc(void* ptr, size_t size) {
   return newptr;
 }
 
-void cac_free(void* ptr) {
-  free(ptr);
-}
+void cac_free(void* ptr) { free(ptr); }
