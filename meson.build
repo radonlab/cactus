@@ -3,21 +3,28 @@ project('cactus', 'c',
   default_options: ['warning_level=3']
 )
 
-inc_dir = include_directories('include')
-src_dir = include_directories('src')
-
-srcs = files(
+lib_srcs = files(
   'src/base/buf_stream.c',
   'src/base/common.c',
   'src/base/file_stream.c',
   'src/base/stream.c',
   'src/parser/grammar.c',
-  'src/main.c',
+)
+
+lib_cactus = shared_library('cactus',
+  lib_srcs,
+  include_directories: include_directories(['include', 'src']),
+  install: true
+)
+
+lib_cactus_dep = declare_dependency(
+  link_with: lib_cactus,
+  include_directories: include_directories(['include', 'src'])
 )
 
 executable('cactus',
-  srcs,
-  include_directories: [inc_dir, src_dir],
+  files('src/main.c'),
+  dependencies: [lib_cactus_dep],
   install: true
 )
 
