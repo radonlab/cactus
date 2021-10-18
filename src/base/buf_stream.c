@@ -5,7 +5,8 @@
 
 #include "base/common.h"
 
-#define ENLARGE_CAPACITY(x) (x + (x >> 1))
+#define DEFAULT_CAPACITY 256
+#define ENLARGE_CAPACITY(x) (x + (x + 1 >> 1))
 
 static size_t buf_istream_read(cac_buf_istream_t* stream, uint8_t* buf, size_t len) {
   if (len == 0) {
@@ -42,9 +43,12 @@ static bool buf_istream_seek(cac_buf_istream_t* stream, size_t off, int whence) 
 
 static bool buf_istream_close(cac_buf_istream_t* stream) { return true; }
 
-static void buf_ostream_ensure_capacity(cac_buf_ostream_t* stream, size_t size) {
-  if (size > stream->capacity) {
+static void buf_ostream_ensure_capacity(cac_buf_ostream_t* stream, size_t min_capacity) {
+  if (min_capacity > stream->capacity) {
     size_t new_capacity = ENLARGE_CAPACITY(stream->capacity);
+    if (new_capacity < min_capacity) {
+      new_capacity = min_capacity;
+    }
     stream->buf = cac_realloc(stream->buf, new_capacity);
     stream->capacity = new_capacity;
   }
@@ -87,7 +91,7 @@ cac_istream_t* cac_buf_istream_init(cac_buf_istream_t* stream, const uint8_t* bu
 
 cac_ostream_t* cac_buf_ostream_init(cac_buf_ostream_t* stream) {
   stream->base.ops = &buf_ostream_ops;
-  stream->buf = cac_malloc(BUF_STREAM_INIT_CAP);
+  stream->buf = cac_malloc(DEFAULT_CAPACITY);
   stream->size = 0;
-  stream->capacity = BUF_STREAM_INIT_CAP;
+  stream->capacity = DEFAULT_CAPACITY;
 }
