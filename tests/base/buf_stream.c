@@ -25,13 +25,22 @@ void test_base__buf_stream__read() {
 void test_base__buf_stream__write() {
   char* str1 = "foo";
   char* str2 = "bar";
+  char str3[2048];
+  size_t total = 0;
   size_t n;
   cac_buf_ostream_t bs;
   cac_buf_ostream_init(&bs);
   cac_ostream_t* s = (cac_ostream_t*)&bs;
   n = cac_ostream_write(s, (uint8_t*)str1, strlen(str1));
+  total += n;
   cl_assert_equal_i(n, 3);
   n = cac_ostream_write(s, (uint8_t*)str2, strlen(str2));
+  total += n;
   cl_assert_equal_i(n, 3);
   cl_assert_equal_i(bs.size, 6);
+  memset(str3, 0, sizeof(str3));
+  n = cac_ostream_write(s, (uint8_t*)str3, sizeof(str3));
+  total += n;
+  cl_assert_equal_i(n, 2048);
+  cl_assert(bs.capacity >= total);
 }
