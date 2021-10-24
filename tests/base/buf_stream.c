@@ -8,18 +8,17 @@ void test_base__buf_stream__read() {
   char* str = "foobarbaz";
   char buf[5];
   size_t n;
-  cac_buf_istream_t bs;
-  cac_buf_istream_init(&bs, (uint8_t*)str, strlen(str));
-  cac_istream_t* s = (cac_istream_t*)&bs;
-  n = cac_istream_read(s, (uint8_t*)buf, sizeof(buf));
+  cac_buf_istream_t buf_stream;
+  cac_istream_t* stream = cac_buf_istream_init(&buf_stream, (uint8_t*)str, strlen(str));
+  n = cac_istream_read(stream, (uint8_t*)buf, sizeof(buf));
   cl_assert_equal_i(n, 5);
   cl_assert_equal_strn(buf, "fooba", n);
-  n = cac_istream_read(s, (uint8_t*)buf, sizeof(buf));
+  n = cac_istream_read(stream, (uint8_t*)buf, sizeof(buf));
   cl_assert_equal_i(n, 4);
   cl_assert_equal_strn(buf, "rbaz", n);
-  n = cac_istream_read(s, (uint8_t*)buf, 1);
+  n = cac_istream_read(stream, (uint8_t*)buf, 1);
   cl_assert_equal_i(n, 0);
-  cl_assert_equal_i(bs.offset, bs.size);
+  cl_assert_equal_i(buf_stream.offset, buf_stream.size);
 }
 
 void test_base__buf_stream__write() {
@@ -28,19 +27,18 @@ void test_base__buf_stream__write() {
   char str3[2048];
   size_t total = 0;
   size_t n;
-  cac_buf_ostream_t bs;
-  cac_buf_ostream_init(&bs);
-  cac_ostream_t* s = (cac_ostream_t*)&bs;
-  n = cac_ostream_write(s, (uint8_t*)str1, strlen(str1));
+  cac_buf_ostream_t buf_stream;
+  cac_ostream_t* stream = cac_buf_ostream_init(&buf_stream);
+  n = cac_ostream_write(stream, (uint8_t*)str1, strlen(str1));
   total += n;
   cl_assert_equal_i(n, 3);
-  n = cac_ostream_write(s, (uint8_t*)str2, strlen(str2));
+  n = cac_ostream_write(stream, (uint8_t*)str2, strlen(str2));
   total += n;
   cl_assert_equal_i(n, 3);
-  cl_assert_equal_i(bs.size, 6);
+  cl_assert_equal_i(buf_stream.size, 6);
   memset(str3, 0, sizeof(str3));
-  n = cac_ostream_write(s, (uint8_t*)str3, sizeof(str3));
+  n = cac_ostream_write(stream, (uint8_t*)str3, sizeof(str3));
   total += n;
   cl_assert_equal_i(n, 2048);
-  cl_assert(bs.capacity >= total);
+  cl_assert(buf_stream.capacity >= total);
 }
