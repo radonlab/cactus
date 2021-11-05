@@ -22,9 +22,12 @@ lib_cactus_dep = declare_dependency(
   include_directories: include_directories(['include', 'src'])
 )
 
+cwalk_proj = subproject('cwalk')
+cwalk_dep = cwalk_proj.get_variable('cwalk_dep')
+
 executable('cactus',
   files('src/main.c'),
-  dependencies: [lib_cactus_dep],
+  dependencies: [lib_cactus_dep, cwalk_dep],
   install: true
 )
 

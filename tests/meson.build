@@ -7,7 +7,7 @@ test_srcs = files(
 tests = executable('tests',
   test_srcs,
   files('clar.c', 'tests.c'),
-  dependencies: [lib_cactus_dep]
+  dependencies: [lib_cactus_dep, cwalk_dep]
 )
 
 test('all', tests)
