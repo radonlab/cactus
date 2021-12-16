@@ -56,6 +56,10 @@ static void buf_ostream_ensure_capacity(cac_buf_ostream_t* stream, size_t min_ca
 
 static size_t buf_ostream_write(cac_buf_ostream_t* stream, const uint8_t* buf, size_t len) {
   size_t newsize = stream->size + len;
+  if (stream->max_size != 0 && newsize > stream->max_size) {
+    newsize = stream->max_size;
+    len = newsize - stream->size;
+  }
   buf_ostream_ensure_capacity(stream, newsize);
   memcpy(stream->buf + stream->size, buf, len);
   // accumulate size
@@ -89,9 +93,10 @@ cac_istream_t* cac_buf_istream_init(cac_buf_istream_t* stream, const uint8_t* bu
   stream->offset = 0;
 }
 
-cac_ostream_t* cac_buf_ostream_init(cac_buf_ostream_t* stream) {
+cac_ostream_t* cac_buf_ostream_init(cac_buf_ostream_t* stream, size_t max_size) {
   stream->base.ops = &buf_ostream_ops;
   stream->buf = cac_malloc(DEFAULT_CAPACITY);
   stream->size = 0;
   stream->capacity = DEFAULT_CAPACITY;
+  stream->max_size = max_size;
 }
