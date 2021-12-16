@@ -39,7 +39,7 @@ void test_base__buf_stream__write() {
   size_t total = 0;
   size_t n;
   static cac_buf_ostream_t buf_stream;
-  cac_ostream_t* stream = cac_buf_ostream_init(&buf_stream);
+  cac_ostream_t* stream = cac_buf_ostream_init(&buf_stream, 0);
   cl_set_cleanup(&cleanup_ostream, stream);
   n = cac_ostream_write(stream, (uint8_t*)str1, strlen(str1));
   total += n;
