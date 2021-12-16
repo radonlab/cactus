@@ -42,14 +42,24 @@ static cac_ostream_ops_t file_ostream_ops = {
     &file_ostream_close,
 };
 
-cac_istream_t* cac_file_istream_init(cac_file_istream_t* stream, FILE* file) {
+cac_istream_t* cac_file_istream_open(cac_file_istream_t* stream, const char* path, const char* modes) {
+  FILE* file = fopen(path, modes);
+  return cac_file_istream_from(stream, file);
+}
+
+cac_ostream_t* cac_file_ostream_open(cac_file_ostream_t* stream, const char* path, const char* modes) {
+  FILE* file = fopen(path, modes);
+  return cac_file_ostream_from(stream, file);
+}
+
+cac_istream_t* cac_file_istream_from(cac_file_istream_t* stream, FILE* file) {
   stream->base.ops = &file_istream_ops;
   stream->file = file;
   setvbuf(file, NULL, _IOFBF, FILE_BUFFER_SIZE);
   return stream;
 }
 
-cac_ostream_t* cac_file_ostream_init(cac_file_ostream_t* stream, FILE* file) {
+cac_ostream_t* cac_file_ostream_from(cac_file_ostream_t* stream, FILE* file) {
   stream->base.ops = &file_ostream_ops;
   stream->file = file;
   setvbuf(file, NULL, _IOFBF, FILE_BUFFER_SIZE);
