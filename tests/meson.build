@@ -1,6 +1,6 @@
 test_srcs = files(
-  'base/buf_stream.c',
-  'base/file_stream.c',
+  'buf_stream_test.c',
+  'file_stream_test.c',
   'syntax/statement.c',
 )
 
