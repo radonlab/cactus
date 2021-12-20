@@ -1,31 +1,31 @@
-extern void test_base__buf_stream__read();
-extern void test_base__buf_stream__write();
-extern void test_base__file_stream__read();
-extern void test_base__file_stream__write();
-extern void test_syntax__statement__foo();
-static const struct clar_func _clar_cb_base__buf_stream[] = {
-    { "read", &test_base__buf_stream__read },
-    { "write", &test_base__buf_stream__write }
+extern void test_buf_stream_test__read(void);
+extern void test_buf_stream_test__write(void);
+extern void test_file_stream_test__read(void);
+extern void test_file_stream_test__write(void);
+extern void test_syntax__statement__foo(void);
+static const struct clar_func _clar_cb_buf_stream_test[] = {
+    { "read", &test_buf_stream_test__read },
+    { "write", &test_buf_stream_test__write }
 };
-static const struct clar_func _clar_cb_base__file_stream[] = {
-    { "read", &test_base__file_stream__read },
-    { "write", &test_base__file_stream__write }
+static const struct clar_func _clar_cb_file_stream_test[] = {
+    { "read", &test_file_stream_test__read },
+    { "write", &test_file_stream_test__write }
 };
 static const struct clar_func _clar_cb_syntax__statement[] = {
     { "foo", &test_syntax__statement__foo }
 };
 static struct clar_suite _clar_suites[] = {
     {
-        "base::buf_stream",
+        "buf_stream_test",
         { NULL, NULL },
         { NULL, NULL },
-        _clar_cb_base__buf_stream, 2, 1
+        _clar_cb_buf_stream_test, 2, 1
     },
     {
-        "base::file_stream",
+        "file_stream_test",
         { NULL, NULL },
         { NULL, NULL },
-        _clar_cb_base__file_stream, 2, 1
+        _clar_cb_file_stream_test, 2, 1
     },
     {
         "syntax::statement",

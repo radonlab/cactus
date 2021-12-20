@@ -14,7 +14,7 @@ static void cleanup_ostream(void* opaque) {
   cac_ostream_close(stream);
 }
 
-void test_base__file_stream__read() {
+void test_file_stream_test__read(void) {
   char* filepath = path_of_test_data("plain-text.txt");
   char buf[5];
   size_t n;
@@ -26,7 +26,7 @@ void test_base__file_stream__read() {
   cl_assert_equal_strn(buf, "Lorem", n);
 }
 
-void test_base__file_stream__write() {
+void test_file_stream_test__write(void) {
   char* filepath = path_of_test_data("output-text.txt");
   char* str = "Lorem ipsum dolor sit amet\n";
   size_t n;

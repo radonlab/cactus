@@ -14,7 +14,7 @@ static void cleanup_ostream(void* opaque) {
   cac_ostream_close(stream);
 }
 
-void test_base__buf_stream__read() {
+void test_buf_stream_test__read(void) {
   char* str = "foobarbaz";
   char buf[5];
   size_t n;
@@ -32,7 +32,7 @@ void test_base__buf_stream__read() {
   cl_assert_equal_i(buf_stream.offset, buf_stream.size);
 }
 
-void test_base__buf_stream__write() {
+void test_buf_stream_test__write(void) {
   char* str1 = "foo";
   char* str2 = "bar";
   char str3[2048];
