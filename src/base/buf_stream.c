@@ -8,32 +8,34 @@
 #define DEFAULT_CAPACITY 256
 #define ENLARGE_CAPACITY(x) (x + ((x + 1) >> 1))
 
-static size_t buf_istream_read(cac_buf_istream_t* stream, uint8_t* buf, size_t len) {
+static size_t buf_istream_read(cac_istream_t* stream, uint8_t* buf, size_t len) {
+  cac_buf_istream_t* buf_stream = (cac_buf_istream_t*)stream;
   if (len == 0) {
     return 0;
   }
-  if (stream->offset >= stream->size) {
+  if (buf_stream->offset >= buf_stream->size) {
     // underflowed
     return 0;
   }
   // copy left n bytes at most
-  size_t count = stream->size - stream->offset;
+  size_t count = buf_stream->size - buf_stream->offset;
   if (len < count) {
     count = len;
   }
-  memcpy(buf, stream->buf + stream->offset, count);
+  memcpy(buf, buf_stream->buf + buf_stream->offset, count);
   // forward offset
-  stream->offset += count;
+  buf_stream->offset += count;
   return count;
 }
 
-static bool buf_istream_seek(cac_buf_istream_t* stream, size_t off, int whence) {
+static bool buf_istream_seek(cac_istream_t* stream, size_t off, int whence) {
+  cac_buf_istream_t* buf_stream = (cac_buf_istream_t*)stream;
   if (whence == SEEK_SET) {
-    stream->offset = off;
+    buf_stream->offset = off;
   } else if (whence == SEEK_CUR) {
-    stream->offset += off;
+    buf_stream->offset += off;
   } else if (whence == SEEK_END) {
-    stream->offset = stream->size + off;
+    buf_stream->offset = buf_stream->size + off;
   } else {
     // invalid whence
     return false;
@@ -41,36 +43,38 @@ static bool buf_istream_seek(cac_buf_istream_t* stream, size_t off, int whence) 
   return true;
 }
 
-static bool buf_istream_close(cac_buf_istream_t* stream) { return true; }
+static bool buf_istream_close(cac_istream_t* stream) { return true; }
 
-static void buf_ostream_ensure_capacity(cac_buf_ostream_t* stream, size_t min_capacity) {
-  if (min_capacity > stream->capacity) {
-    size_t new_capacity = ENLARGE_CAPACITY(stream->capacity);
+static void buf_ostream_ensure_capacity(cac_buf_ostream_t* buf_stream, size_t min_capacity) {
+  if (min_capacity > buf_stream->capacity) {
+    size_t new_capacity = ENLARGE_CAPACITY(buf_stream->capacity);
     if (new_capacity < min_capacity) {
       new_capacity = min_capacity;
     }
-    stream->buf = cac_realloc(stream->buf, new_capacity);
-    stream->capacity = new_capacity;
+    buf_stream->buf = cac_realloc(buf_stream->buf, new_capacity);
+    buf_stream->capacity = new_capacity;
   }
 }
 
-static size_t buf_ostream_write(cac_buf_ostream_t* stream, const uint8_t* buf, size_t len) {
-  size_t newsize = stream->size + len;
-  if (stream->max_size != 0 && newsize > stream->max_size) {
-    newsize = stream->max_size;
-    len = newsize - stream->size;
+static size_t buf_ostream_write(cac_ostream_t* stream, const uint8_t* buf, size_t len) {
+  cac_buf_ostream_t* buf_stream = (cac_buf_ostream_t*)stream;
+  size_t newsize = buf_stream->size + len;
+  if (buf_stream->max_size != 0 && newsize > buf_stream->max_size) {
+    newsize = buf_stream->max_size;
+    len = newsize - buf_stream->size;
   }
-  buf_ostream_ensure_capacity(stream, newsize);
-  memcpy(stream->buf + stream->size, buf, len);
+  buf_ostream_ensure_capacity(buf_stream, newsize);
+  memcpy(buf_stream->buf + buf_stream->size, buf, len);
   // accumulate size
-  stream->size += len;
+  buf_stream->size += len;
   return len;
 }
 
-static bool buf_ostream_flush(cac_buf_ostream_t* stream) { return true; }
+static bool buf_ostream_flush(cac_ostream_t* stream) { return true; }
 
-static bool buf_ostream_close(cac_buf_ostream_t* stream) {
-  cac_free(stream->buf);
+static bool buf_ostream_close(cac_ostream_t* stream) {
+  cac_buf_ostream_t* buf_stream = (cac_buf_ostream_t*)stream;
+  cac_free(buf_stream->buf);
   return true;
 }
 
@@ -91,6 +95,7 @@ cac_istream_t* cac_buf_istream_init(cac_buf_istream_t* stream, const uint8_t* bu
   stream->buf = buf;
   stream->size = size;
   stream->offset = 0;
+  return (cac_istream_t*)stream;
 }
 
 cac_ostream_t* cac_buf_ostream_init(cac_buf_ostream_t* stream, size_t max_size) {
@@ -99,4 +104,5 @@ cac_ostream_t* cac_buf_ostream_init(cac_buf_ostream_t* stream, size_t max_size) 
   stream->size = 0;
   stream->capacity = DEFAULT_CAPACITY;
   stream->max_size = max_size;
+  return (cac_ostream_t*)stream;
 }
