@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void handle_out_of_memory() { abort(); }
+void handle_out_of_memory(void) { abort(); }
 
 void* cac_malloc(size_t size) {
   assert(size != 0);

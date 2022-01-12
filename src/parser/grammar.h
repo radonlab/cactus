@@ -9,9 +9,9 @@ extern "C" {
 
 typedef struct cactus_context_tag cactus_context_t;
 
-cactus_context_t *cactus_create(void *auxil);
-int cactus_parse(cactus_context_t *ctx, int *ret);
-void cactus_destroy(cactus_context_t *ctx);
+cactus_context_t* cactus_create(void* auxil);
+int cactus_parse(cactus_context_t* ctx, int* ret);
+void cactus_destroy(cactus_context_t* ctx);
 
 #ifdef __cplusplus
 }
